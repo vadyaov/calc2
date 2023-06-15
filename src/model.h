@@ -13,7 +13,7 @@ class Model {
     Model() = delete;
     explicit Model(const std::string&);
     ~Model() = default;
-    double CalculateExpression() const;
+    double CalculateExpression(const double) const;
 };
 
 #endif  // _MODEL_
