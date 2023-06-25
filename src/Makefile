@@ -4,7 +4,7 @@ all: test
 
 test:
 	mkdir -p $(BUILD_DIR)
-	cmake . -B $(BUILD_DIR)
+	cmake ./calclogic -B $(BUILD_DIR)
 	$(MAKE) -C $(BUILD_DIR) tests
 	./build/tests
 

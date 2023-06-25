@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../model.h"
+#include "../calclogic/model.h"
 #include <cmath>
 
 TEST(test, t1) {
