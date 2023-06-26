@@ -1,11 +1,17 @@
 #include <QLineEdit>
 #include <QGridLayout>
+#include <QRadioButton>
+#include <QLabel>
 
 #include "smartcalc.h"
 #include "button.h"
 
 SmartCalc::SmartCalc(QWidget* parent) : QWidget(parent) {
-  maindisplay = new QLineEdit("0");
+  maindisplay = new QLineEdit();
+  maindisplay->setReadOnly(true);
+  maindisplay->setAlignment(Qt::AlignRight);
+  // i can delete the length check and uncommit this line
+  /* maindisplay->setMaxLength(255); */
   QFont font = maindisplay->font();
   font.setPointSize(font.pointSize() + 8);
   maindisplay->setFont(font);
@@ -17,8 +23,8 @@ SmartCalc::SmartCalc(QWidget* parent) : QWidget(parent) {
   Button *ac_btn = CreateButton(tr("AC"), SLOT(AcClicked()));
   Button *x_btn = CreateButton(tr("X"), SLOT(XClicked()));
   Button *point_btn = CreateButton(tr("."), SLOT(PointClicked()));
-  Button *lbracket_btn = CreateButton(tr("("), SLOT(LbracketClicked()));
-  Button *rbracket_btn = CreateButton(tr(")"), SLOT(RbracketClicked()));
+  Button *lbracket_btn = CreateButton(tr("("), SLOT(LBracketClicked()));
+  Button *rbracket_btn = CreateButton(tr(")"), SLOT(RBracketClicked()));
   Button *div_btn = CreateButton(tr("\303\267"), SLOT(DivClicked()));
   Button *mult_btn = CreateButton(tr("\303\227"), SLOT(MultClicked()));
   Button *minus_btn = CreateButton(tr("-"), SLOT(MinusClicked()));
@@ -36,8 +42,33 @@ SmartCalc::SmartCalc(QWidget* parent) : QWidget(parent) {
   Button *log_btn = CreateButton(tr("log"), SLOT(LogClicked()));
   Button *sqrt_btn = CreateButton(tr("sqrt"), SLOT(SqrtClicked()));
 
+  QLineEdit *x_display = new QLineEdit();
+  QLineEdit *left_border_display = new QLineEdit();
+  QLineEdit *right_border_display = new QLineEdit();
+  QLineEdit *step_display = new QLineEdit();
+  QLineEdit *ymin_display = new QLineEdit();
+  QLineEdit *ymax_display = new QLineEdit();
+
+  QLabel *x_label = new QLabel(tr("x:"));
+  QLabel *left_border_label = new QLabel(tr("from x:"));
+  QLabel *right_border_label = new QLabel(tr("to x:"));
+  QLabel *step_label = new QLabel(tr("X Step"));
+  QLabel *y_min_label = new QLabel(tr("from y:"));
+  QLabel *y_max_label = new QLabel(tr("to y:"));
+
+  QRadioButton *graph_btn = new QRadioButton("Graph", this);
+
   QGridLayout *main_layout = new QGridLayout;
   main_layout->setSizeConstraint(QLayout::SetFixedSize);
+
+  InitGraph(myplot);
+
+  x_display->setMaximumWidth(80);
+  left_border_display->setMaximumWidth(80);
+  right_border_display->setMaximumWidth(80);
+  step_display->setMaximumWidth(80);
+  ymin_display->setMaximumWidth(80);
+  ymax_display->setMaximumWidth(80);
 
   main_layout->addWidget(DigitButtons[0], 5, 3);
   main_layout->addWidget(DigitButtons[1], 4, 3);
@@ -49,6 +80,7 @@ SmartCalc::SmartCalc(QWidget* parent) : QWidget(parent) {
   main_layout->addWidget(DigitButtons[7], 2, 3);
   main_layout->addWidget(DigitButtons[8], 2, 4);
   main_layout->addWidget(DigitButtons[9], 2, 5);
+
   main_layout->addWidget(bcsp_btn, 0, 6);
   main_layout->addWidget(ac_btn, 1, 6);
   main_layout->addWidget(x_btn, 1, 1);
@@ -71,7 +103,27 @@ SmartCalc::SmartCalc(QWidget* parent) : QWidget(parent) {
   main_layout->addWidget(ln_btn, 2, 2);
   main_layout->addWidget(log_btn, 3, 2);
   main_layout->addWidget(sqrt_btn, 4, 2);
+
   main_layout->addWidget(maindisplay, 0, 0, 1, 6);
+  main_layout->addWidget(x_display, 5, 2);
+  main_layout->addWidget(graph_btn, 5, 0);
+  main_layout->addWidget(x_label, 5, 1);
+  /* #if defined __APPLE__ && defined __MACH__ */
+  /* layout->addWidget(myplot, 6, 0, 30, 6); */
+  /* #else */
+  /* layout->addWidget(myplot, 6, 0, 50, 6); */
+  /* #endif */
+
+  main_layout->addWidget(left_border_label, 6, 6);
+  main_layout->addWidget(right_border_label, 8, 6);
+  main_layout->addWidget(step_label, 10, 6);
+  main_layout->addWidget(left_border_display, 7, 6);
+  main_layout->addWidget(right_border_display, 9, 6);
+  main_layout->addWidget(step_display, 11, 6);
+  main_layout->addWidget(y_min_label, 14, 6);
+  main_layout->addWidget(ymin_display, 15, 6);
+  main_layout->addWidget(y_max_label, 16, 6);
+  main_layout->addWidget(ymax_display, 17, 6);
 
   setLayout(main_layout);
 
@@ -79,9 +131,36 @@ SmartCalc::SmartCalc(QWidget* parent) : QWidget(parent) {
 
 }
 
-SmartCalc::~SmartCalc() {
-  delete maindisplay;
-}
+/* SmartCalc::~SmartCalc() { */
+  /* delete maindisplay; */
+  /* for (int i = 0; i < NumDigitButtons; ++i) */
+  /*   delete DigitButtons[i]; */
+
+  /* delete bcsp_btn; */
+  /* delete ac_btn; */
+  /* delete x_btn; */
+  /* delete point_btn; */
+  /* delete lbracket_btn; */
+  /* delete rbracket_btn; */
+  /* delete div_btn; */
+  /* delete mult_btn; */
+  /* delete minus_btn; */
+  /* delete plus_btn; */
+  /* delete mod_btn; */
+  /* delete pow_btn; */
+  /* delete equal_btn; */
+  /* delete sin_btn; */
+  /* delete cos_btn; */
+  /* delete tan_btn; */
+  /* delete asin_btn; */
+  /* delete acos_btn; */
+  /* delete atan_btn; */
+  /* delete ln_btn; */
+  /* delete log_btn; */
+  /* delete sqrt_btn; */
+
+  /* delete main_layout; */
+/* } */
 
 void SmartCalc::DigitClicked() {
   Button *clicked_button = qobject_cast<Button*>(sender());
@@ -92,8 +171,111 @@ void SmartCalc::DigitClicked() {
   maindisplay->setText(maindisplay->text() + QString::number(digit_value));
 }
 
+void SmartCalc::BscpClicked() {
+  QString text = maindisplay->text();
+  text.chop(1);
+  maindisplay->setText(text);
+}
+
+void SmartCalc::AcClicked() {
+  maindisplay->clear();
+}
+
+void SmartCalc::XClicked() {
+  maindisplay->setText(maindisplay->text() + QString('x'));
+}
+
+void SmartCalc::PointClicked() {
+  maindisplay->setText(maindisplay->text() + QString('.'));
+}
+
+void SmartCalc::LBracketClicked() {
+  maindisplay->setText(maindisplay->text() + QString('('));
+}
+
+void SmartCalc::RBracketClicked() {
+  maindisplay->setText(maindisplay->text() + QString(')'));
+}
+
+void SmartCalc::DivClicked() {
+  maindisplay->setText(maindisplay->text() + QString('/'));
+}
+
+void SmartCalc::MultClicked() {
+  maindisplay->setText(maindisplay->text() + QString('*'));
+}
+
+void SmartCalc::MinusClicked() {
+  maindisplay->setText(maindisplay->text() + QString('-'));
+}
+
+void SmartCalc::PlusClicked() {
+  maindisplay->setText(maindisplay->text() + QString('+'));
+}
+
+void SmartCalc::ModClicked() {
+  maindisplay->setText(maindisplay->text() + QString("mod"));
+}
+
+void SmartCalc::PowClicked() {
+  maindisplay->setText(maindisplay->text() + QString('^'));
+}
+
+void SmartCalc::EqualClicked() {
+}
+
+void SmartCalc::SinClicked() {
+  maindisplay->setText(maindisplay->text() + QString("sin("));
+}
+
+void SmartCalc::CosClicked() {
+  maindisplay->setText(maindisplay->text() + QString("cos("));
+}
+
+void SmartCalc::TanClicked() {
+  maindisplay->setText(maindisplay->text() + QString("tan("));
+}
+
+void SmartCalc::AsinClicked() {
+  maindisplay->setText(maindisplay->text() + QString("asin("));
+}
+
+void SmartCalc::AcosClicked() {
+  maindisplay->setText(maindisplay->text() + QString("acos("));
+}
+
+void SmartCalc::AtanClicked() {
+  maindisplay->setText(maindisplay->text() + QString("atan("));
+}
+
+void SmartCalc::LnClicked() {
+  maindisplay->setText(maindisplay->text() + QString("ln("));
+}
+
+void SmartCalc::LogClicked() {
+  maindisplay->setText(maindisplay->text() + QString("log("));
+}
+
+void SmartCalc::SqrtClicked() {
+  maindisplay->setText(maindisplay->text() + QString("sqrt("));
+}
+
 Button* SmartCalc::CreateButton(const QString &text, const char *member) {
   Button *button = new Button(text);
   connect(button, SIGNAL(clicked()), this, member);
   return button;
+}
+
+void SmartCalc::InitGraph(QCustomPlot *plot) {
+  plot->addGraph();
+  plot->graph(0)->setPen(QPen(Qt::blue));
+  plot->graph(0)->setBrush(QBrush(QColor(0, 0, 255, 20)));
+  plot->xAxis2->setVisible(true);
+  plot->xAxis2->setTickLabels(false);
+  plot->yAxis2->setVisible(true);
+  plot->yAxis2->setTickLabels(false);
+  plot->xAxis->setLabel("x");
+  plot->yAxis->setLabel("y");
+  plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom |
+                        QCP::iSelectPlottables);
 }
