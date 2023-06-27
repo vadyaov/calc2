@@ -10,12 +10,8 @@ int main(int argc, char **argv) {
 /*   calc.setMaximumWidth(650); */
 /*   calc.setMaximumHeight(720); */
 /* #else */
-  /* calc.setMinimumWidth(620); */
-  /* calc.setMinimumHeight(740); */
-  /* calc.setMaximumWidth(620); */
-  /* calc.setMaximumHeight(740); */
+  calc.setFixedSize(610, 750);
 /* #endif */
-  calc.setFixedSize(620, 740);
   calc.show();
   return a.exec();
 }

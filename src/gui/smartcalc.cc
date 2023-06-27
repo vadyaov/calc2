@@ -43,32 +43,44 @@ SmartCalc::SmartCalc(QWidget* parent) : QWidget(parent) {
   Button *sqrt_btn = CreateButton(tr("sqrt"), SLOT(SqrtClicked()));
 
   QLineEdit *x_display = new QLineEdit();
-  QLineEdit *left_border_display = new QLineEdit();
-  QLineEdit *right_border_display = new QLineEdit();
+  x_display->setAlignment(Qt::AlignCenter);
+  x_display->setPlaceholderText(QString("x"));
+  x_display->setMaximumWidth(80);
+  x_display->setMaximumHeight(60);
+  QLineEdit *xmin_display = new QLineEdit();
+  xmin_display->setPlaceholderText(QString("X min"));
+  QLineEdit *xmax_display = new QLineEdit();
+  xmax_display->setPlaceholderText(QString("X max"));
   QLineEdit *step_display = new QLineEdit();
+  step_display->setPlaceholderText(QString("step"));
   QLineEdit *ymin_display = new QLineEdit();
+  ymin_display->setPlaceholderText(QString("Y min"));
   QLineEdit *ymax_display = new QLineEdit();
+  ymax_display->setPlaceholderText(QString("Y max"));
 
-  QLabel *x_label = new QLabel(tr("x:"));
-  QLabel *left_border_label = new QLabel(tr("from x:"));
-  QLabel *right_border_label = new QLabel(tr("to x:"));
-  QLabel *step_label = new QLabel(tr("X Step"));
-  QLabel *y_min_label = new QLabel(tr("from y:"));
-  QLabel *y_max_label = new QLabel(tr("to y:"));
+  /* QLabel *x_label = new QLabel(tr("x:")); */
+  /* x_label->setAlignment(Qt::AlignCenter | Qt::AlignRight); */
+  /* QLabel *xmin_label = new QLabel(tr("from x:")); */
+  /* QLabel *xmax_label = new QLabel(tr("to x:")); */
+  /* QLabel *step_label = new QLabel(tr("X Step")); */
+  /* QLabel *y_min_label = new QLabel(tr("from y:")); */
+  /* QLabel *y_max_label = new QLabel(tr("to y:")); */
 
-  QRadioButton *graph_btn = new QRadioButton("Graph", this);
+  QRadioButton *graph_btn = new QRadioButton("plot", this);
+  myplot = new QCustomPlot();
 
   QGridLayout *main_layout = new QGridLayout;
-  main_layout->setSizeConstraint(QLayout::SetFixedSize);
+  /* main_layout->setSizeConstraint(QLayout::SetFixedSize); */
 
   InitGraph(myplot);
 
-  x_display->setMaximumWidth(80);
-  left_border_display->setMaximumWidth(80);
-  right_border_display->setMaximumWidth(80);
-  step_display->setMaximumWidth(80);
-  ymin_display->setMaximumWidth(80);
-  ymax_display->setMaximumWidth(80);
+  /* x_display->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred); */
+  /* x_display->setMaximumWidth(50); */
+  xmin_display->setMaximumWidth(60);
+  xmax_display->setMaximumWidth(60);
+  step_display->setMaximumWidth(60);
+  ymin_display->setMaximumWidth(60);
+  ymax_display->setMaximumWidth(60);
 
   main_layout->addWidget(DigitButtons[0], 5, 3);
   main_layout->addWidget(DigitButtons[1], 4, 3);
@@ -83,7 +95,7 @@ SmartCalc::SmartCalc(QWidget* parent) : QWidget(parent) {
 
   main_layout->addWidget(bcsp_btn, 0, 6);
   main_layout->addWidget(ac_btn, 1, 6);
-  main_layout->addWidget(x_btn, 1, 1);
+  main_layout->addWidget(x_btn, 1, 0);
   main_layout->addWidget(point_btn, 5, 4);
   main_layout->addWidget(lbracket_btn, 1, 3);
   main_layout->addWidget(rbracket_btn, 1, 4);
@@ -105,25 +117,31 @@ SmartCalc::SmartCalc(QWidget* parent) : QWidget(parent) {
   main_layout->addWidget(sqrt_btn, 4, 2);
 
   main_layout->addWidget(maindisplay, 0, 0, 1, 6);
-  main_layout->addWidget(x_display, 5, 2);
+  main_layout->addWidget(x_display, 1, 1);
   main_layout->addWidget(graph_btn, 5, 0);
-  main_layout->addWidget(x_label, 5, 1);
-  /* #if defined __APPLE__ && defined __MACH__ */
-  /* layout->addWidget(myplot, 6, 0, 30, 6); */
-  /* #else */
-  /* layout->addWidget(myplot, 6, 0, 50, 6); */
-  /* #endif */
+  /* main_layout->addWidget(x_label, 5, 1); */
+  #if defined __APPLE__ && defined __MACH__
+  main_layout->addWidget(myplot, 6, 0, 30, 7);
+  #else
+  main_layout->addWidget(myplot, 6, 0, 50, 7);
+  #endif
 
-  main_layout->addWidget(left_border_label, 6, 6);
-  main_layout->addWidget(right_border_label, 8, 6);
-  main_layout->addWidget(step_label, 10, 6);
-  main_layout->addWidget(left_border_display, 7, 6);
-  main_layout->addWidget(right_border_display, 9, 6);
-  main_layout->addWidget(step_display, 11, 6);
-  main_layout->addWidget(y_min_label, 14, 6);
-  main_layout->addWidget(ymin_display, 15, 6);
-  main_layout->addWidget(y_max_label, 16, 6);
-  main_layout->addWidget(ymax_display, 17, 6);
+  /* main_layout->addWidget(xmin_label, 6, 6); */
+  /* main_layout->addWidget(xmax_label, 8, 6); */
+  /* main_layout->addWidget(step_label, 10, 6); */
+  #if defined __APPLE__ && defined __MACH__
+  /* main_layout->addWidget(xmin_display, 58, 0); */
+  /* main_layout->addWidget(xmax_display, 58, 1); */
+  /* main_layout->addWidget(step_display, 58, 3); */
+  #else
+  main_layout->addWidget(xmin_display, 58, 0);
+  main_layout->addWidget(xmax_display, 58, 1);
+  main_layout->addWidget(step_display, 58, 3);
+  #endif
+  /* main_layout->addWidget(y_min_label, 14, 6); */
+  main_layout->addWidget(ymin_display, 58, 5);
+  /* main_layout->addWidget(y_max_label, 16, 6); */
+  main_layout->addWidget(ymax_display, 58, 6);
 
   setLayout(main_layout);
 
