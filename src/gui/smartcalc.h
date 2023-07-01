@@ -4,6 +4,7 @@
 #include <QWidget>
 
 #include "qcustomplot.h"
+#include "../controller.h"
 
 QT_BEGIN_NAMESPACE
 class QLineEdit;
@@ -15,7 +16,7 @@ class SmartCalc : public QWidget {
 
   public:
       SmartCalc(QWidget* parent = nullptr);
-      /* ~SmartCalc(); */
+      ~SmartCalc();
 
   private slots:
     void DigitClicked();
@@ -46,6 +47,8 @@ class SmartCalc : public QWidget {
     Button *CreateButton(const QString &text, const char *member);
     enum { NumDigitButtons = 10 };
     void InitGraph(QCustomPlot *plot);
+    void PrintPlot(const Controller&);
+    /* int CountDots(double, double, double, double); */
 
     /* QTabWidget *calc_widget; */
     /* QFrame *frame_1, *frame_2, *frame_3; */
@@ -55,7 +58,10 @@ class SmartCalc : public QWidget {
 
     Button *DigitButtons[NumDigitButtons];
 
-    QLineEdit *maindisplay;
+    QLineEdit *main_display, *x_display, *xmin_display, *xmax_display, *step_display,
+              *ymin_display, *ymax_display;
+
+    QRadioButton *graph_btn;
 
     QCustomPlot *myplot;
 

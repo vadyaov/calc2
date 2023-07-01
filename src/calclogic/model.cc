@@ -54,11 +54,15 @@ static void AppendNumber(std::string::const_iterator& it, std::string& out) {
 }
 
 static void ProcessClosingBracket(std::string& out, std::stack<char>& sstack) {
+  if (sstack.empty()) throw std::logic_error("Invalid expression");
+
   while (sstack.top() != '(') {
     AppendToOutput(sstack.top(), out);
     AppendSpaceToOutput(out);
     sstack.pop();
-    if (sstack.empty()) throw std::logic_error("Invalid expression");
+    if (sstack.empty()) {
+      throw std::logic_error("Invalid expression");
+    }
   }
   sstack.pop();
 }
@@ -129,8 +133,9 @@ bool Invalid(std::string::const_iterator it) {
 }
 
 void IsInvalidDot(const char *point) {
-  if (Invalid(std::string::const_iterator(point)))
+  if (Invalid(std::string::const_iterator(point))) {
     throw std::logic_error("Invalid expression");
+  }
 }
 
 static std::string ReplaceFunctionsWithSymbols(const std::string& src) {
@@ -180,7 +185,9 @@ double StringToDouble(std::string::const_iterator& it, std::string::const_iterat
 }
 
 void OperatorAction(std::stack<double>& nstack, char s) {
-  if (nstack.empty()) throw std::logic_error("Invalid expression");
+  if (nstack.empty()) {
+    throw std::logic_error("Invalid expression");
+  }
 
   if (s == '|') return;
   else if (s == '~') {
@@ -189,7 +196,9 @@ void OperatorAction(std::stack<double>& nstack, char s) {
     double right = nstack.top();
     nstack.pop();
 
-    if (nstack.empty()) throw std::logic_error("Invalid expression");
+    if (nstack.empty()) {
+      throw std::logic_error("Invalid expression");
+    }
 
     double left = nstack.top();
     nstack.pop();
@@ -210,7 +219,9 @@ void OperatorAction(std::stack<double>& nstack, char s) {
 }
 
 void FunctionAction(std::stack<double>& nstack, char s) {
-  if (nstack.empty()) throw std::logic_error("Invalid expression");
+  if (nstack.empty()) {
+    throw std::logic_error("Invalid expression");
+  }
 
   double n = nstack.top(), res;
   nstack.pop();
@@ -244,7 +255,7 @@ Model::Model(const std::string& src) : expression{src} {
 // а после - Calculate. Внутри Calculate подставляются только значения для икс (если необходимо).
 // Если же икс меняется (строим график), делаем Calculate для набора точек.
 double Model::CalculateExpression(const double x) const {
-  std::cout << "Polish:" << expression << std::endl;
+  /* std::cout << "Polish:" << expression << std::endl; */
 
   std::stack<double> nstack;
 

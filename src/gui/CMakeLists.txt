@@ -18,8 +18,10 @@ find_package(Qt6 CONFIG REQUIRED COMPONENTS Widgets PrintSupport)
 set(PROJECT_SOURCES
         main.cc
         smartcalc.cc
+        ../calclogic/model.cc
         qcustomplot.cpp
         button.cc
+        ./../controller.h
 )
 
 add_executable(smartcalc
