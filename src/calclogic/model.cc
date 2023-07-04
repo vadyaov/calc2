@@ -111,6 +111,8 @@ static std::string MakePolish(const std::string& src) {
       ProcessClosingBracket(out, sstack);
     } else if (IsOperator(*i)) {
       ProcessOperator(*i, out, sstack);
+    } else {
+      throw std::logic_error("Incorrect expression");
     }
   }
 
@@ -242,10 +244,11 @@ void FunctionAction(std::stack<double>& nstack, char s) {
 }
 
 Model::Model(const std::string& src) : expression{src} {
-  if (255 < src.size())
-    throw std::length_error("Expression length is too big. 255 is limit");
+  if (src.empty()) throw std::length_error("Empty expression");
+
   std::cout << "Expression:" << expression << std::endl;
   expression = MakePolish(ReplaceFunctionsWithSymbols(expression));
+  std::cout << "Polish    :" << expression << std::endl;
 }
 
 // мысль по оптимизации: мне не нравится момент, когда есть 'x' в выражении:

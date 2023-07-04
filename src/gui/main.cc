@@ -1,13 +1,17 @@
 #include "smartcalc.h"
+#include <QTabWidget>
 #include <QApplication>
 
 int main(int argc, char **argv) {
   QApplication a(argc, argv);
-  SmartCalc calc;
+
+  QTabWidget tabs;
+  SmartCalc *calc = new SmartCalc();
 /* #if defined(__APPLE__) && defined(__MACH__) */
 /* #else */
-  calc.setFixedSize(610, 750);
+  tabs.addTab(calc, QString("calc"));
+  tabs.setFixedSize(610, 750);
 /* #endif */
-  calc.show();
+  tabs.show();
   return a.exec();
 }

@@ -46,20 +46,47 @@ class SmartCalc : public QWidget {
   private:
     Button *CreateButton(const QString &text, const char *member);
     enum { NumDigitButtons = 10 };
+
+    void CreateWidgets();
+    void AddWidgets();
+    void TuneWidgets();
     void InitGraph(QCustomPlot *plot);
     void PrintPlot(const Controller&);
     /* int CountDots(double, double, double, double); */
 
     /* QTabWidget *calc_widget; */
     /* QFrame *frame_1, *frame_2, *frame_3; */
-    /* QGridLayout *main_layout; //, *credit_layout, *deposit_layout; */
+    QGridLayout *main_layout; //, *credit_layout, *deposit_layout;
 
   /* -------------------------MainCalc Widgets---------------------------*/
 
     Button *DigitButtons[NumDigitButtons];
 
-    QLineEdit *main_display, *x_display, *xmin_display, *xmax_display, *step_display,
-              *ymin_display, *ymax_display;
+    Button *bcsp_btn;
+    Button *ac_btn;
+    Button *x_btn;
+    Button *point_btn;
+    Button *lbracket_btn;
+    Button *rbracket_btn;
+    Button *div_btn;
+    Button *mult_btn;
+    Button *minus_btn;
+    Button *plus_btn;
+    Button *mod_btn;
+    Button *pow_btn;
+    Button *equal_btn;
+    Button *sin_btn;
+    Button *cos_btn;
+    Button *tan_btn;
+    Button *asin_btn;
+    Button *acos_btn;
+    Button *atan_btn;
+    Button *ln_btn;
+    Button *log_btn;
+    Button *sqrt_btn;
+
+    QLineEdit *main_display, *x_display, *xmin_display, *xmax_display,
+              *step_display, *ymin_display, *ymax_display;
 
     QRadioButton *graph_btn;
 

@@ -14,72 +14,58 @@ constexpr double EPS = 1e-7;
 constexpr double YMAX = 1e6;
 constexpr double YMIN = -1e6;
 
-
 SmartCalc::SmartCalc(QWidget* parent) : QWidget(parent) {
+  CreateWidgets();
+  AddWidgets();
+  InitGraph(myplot);
+  TuneWidgets();
+
+  setLayout(main_layout);
+  setWindowTitle("SmartCalc");
+}
+
+void SmartCalc::CreateWidgets() {
   main_display = new QLineEdit();
-  main_display->setReadOnly(true);
-  main_display->setAlignment(Qt::AlignRight);
-  // i can delete the length check and uncommit this line
-  /* main_display->setMaxLength(255); */
-  QFont font = main_display->font();
-  font.setPointSize(font.pointSize() + 8);
-  main_display->setFont(font);
-
-  for (int i = 0; i < NumDigitButtons; ++i)
-    DigitButtons[i] = CreateButton(QString::number(i), SLOT(DigitClicked()));
-
-  Button *bcsp_btn = CreateButton(tr("<--"), SLOT(BscpClicked()));
-  Button *ac_btn = CreateButton(tr("AC"), SLOT(AcClicked()));
-  Button *x_btn = CreateButton(tr("X"), SLOT(XClicked()));
-  Button *point_btn = CreateButton(tr("."), SLOT(PointClicked()));
-  Button *lbracket_btn = CreateButton(tr("("), SLOT(LBracketClicked()));
-  Button *rbracket_btn = CreateButton(tr(")"), SLOT(RBracketClicked()));
-  Button *div_btn = CreateButton(tr("\303\267"), SLOT(DivClicked()));
-  Button *mult_btn = CreateButton(tr("\303\227"), SLOT(MultClicked()));
-  Button *minus_btn = CreateButton(tr("-"), SLOT(MinusClicked()));
-  Button *plus_btn = CreateButton(tr("+"), SLOT(PlusClicked()));
-  Button *mod_btn = CreateButton(tr("mod"), SLOT(ModClicked()));
-  Button *pow_btn = CreateButton(tr("^"), SLOT(PowClicked()));
-  Button *equal_btn = CreateButton(tr("="), SLOT(EqualClicked()));
-  Button *sin_btn = CreateButton(tr("sin"), SLOT(SinClicked()));
-  Button *cos_btn = CreateButton(tr("cos"), SLOT(CosClicked()));
-  Button *tan_btn = CreateButton(tr("tan"), SLOT(TanClicked()));
-  Button *asin_btn = CreateButton(tr("asin"), SLOT(AsinClicked()));
-  Button *acos_btn = CreateButton(tr("acos"), SLOT(AcosClicked()));
-  Button *atan_btn = CreateButton(tr("atan"), SLOT(AtanClicked()));
-  Button *ln_btn = CreateButton(tr("ln"), SLOT(LnClicked()));
-  Button *log_btn = CreateButton(tr("log"), SLOT(LogClicked()));
-  Button *sqrt_btn = CreateButton(tr("sqrt"), SLOT(SqrtClicked()));
-
   x_display = new QLineEdit();
-  x_display->setAlignment(Qt::AlignCenter);
-  x_display->setPlaceholderText(QString("x"));
-  x_display->setMaximumWidth(80);
-  x_display->setMaximumHeight(60);
   xmin_display = new QLineEdit(QString("-10"));
-  xmin_display->setPlaceholderText(QString("X min"));
   xmax_display = new QLineEdit(QString("+10"));
-  xmax_display->setPlaceholderText(QString("X max"));
   step_display = new QLineEdit();
-  step_display->setPlaceholderText(QString("step"));
   ymin_display = new QLineEdit(QString("-10"));
-  ymin_display->setPlaceholderText(QString("Y min"));
   ymax_display = new QLineEdit(QString("+10"));
-  ymax_display->setPlaceholderText(QString("Y max"));
 
   graph_btn = new QRadioButton("plot", this);
   myplot = new QCustomPlot();
 
-  QGridLayout *main_layout = new QGridLayout;
+  main_layout = new QGridLayout;
 
-  InitGraph(myplot);
+  for (int i = 0; i < NumDigitButtons; ++i)
+    DigitButtons[i] = CreateButton(QString::number(i), SLOT(DigitClicked()));
 
-  xmin_display->setMaximumWidth(60);
-  xmax_display->setMaximumWidth(60);
-  step_display->setMaximumWidth(60);
-  ymin_display->setMaximumWidth(60);
-  ymax_display->setMaximumWidth(60);
+  bcsp_btn = CreateButton(tr("<--"), SLOT(BscpClicked()));
+  ac_btn = CreateButton(tr("AC"), SLOT(AcClicked()));
+  x_btn = CreateButton(tr("X"), SLOT(XClicked()));
+  point_btn = CreateButton(tr("."), SLOT(PointClicked()));
+  lbracket_btn = CreateButton(tr("("), SLOT(LBracketClicked()));
+  rbracket_btn = CreateButton(tr(")"), SLOT(RBracketClicked()));
+  div_btn = CreateButton(tr("\303\267"), SLOT(DivClicked()));
+  mult_btn = CreateButton(tr("\303\227"), SLOT(MultClicked()));
+  minus_btn = CreateButton(tr("-"), SLOT(MinusClicked()));
+  plus_btn = CreateButton(tr("+"), SLOT(PlusClicked()));
+  mod_btn = CreateButton(tr("mod"), SLOT(ModClicked()));
+  pow_btn = CreateButton(tr("^"), SLOT(PowClicked()));
+  equal_btn = CreateButton(tr("="), SLOT(EqualClicked()));
+  sin_btn = CreateButton(tr("sin"), SLOT(SinClicked()));
+  cos_btn = CreateButton(tr("cos"), SLOT(CosClicked()));
+  tan_btn = CreateButton(tr("tan"), SLOT(TanClicked()));
+  asin_btn = CreateButton(tr("asin"), SLOT(AsinClicked()));
+  acos_btn = CreateButton(tr("acos"), SLOT(AcosClicked()));
+  atan_btn = CreateButton(tr("atan"), SLOT(AtanClicked()));
+  ln_btn = CreateButton(tr("ln"), SLOT(LnClicked()));
+  log_btn = CreateButton(tr("log"), SLOT(LogClicked()));
+  sqrt_btn = CreateButton(tr("sqrt"), SLOT(SqrtClicked()));
+}
 
+void SmartCalc::AddWidgets() {
   main_layout->addWidget(DigitButtons[0], 5, 3);
   main_layout->addWidget(DigitButtons[1], 4, 3);
   main_layout->addWidget(DigitButtons[2], 4, 4);
@@ -135,10 +121,36 @@ SmartCalc::SmartCalc(QWidget* parent) : QWidget(parent) {
   main_layout->addWidget(ymin_display, 58, 5);
   main_layout->addWidget(ymax_display, 58, 6);
 
-  setLayout(main_layout);
+}
 
-  setWindowTitle("SmartCalc");
+void SmartCalc::TuneWidgets() {
+  main_display->setReadOnly(true);
+  main_display->setAlignment(Qt::AlignRight);
+  main_display->setMaxLength(255);
 
+  QFont font = main_display->font();
+  font.setPointSize(font.pointSize() + 8);
+  main_display->setFont(font);
+
+  x_display->setAlignment(Qt::AlignCenter);
+  x_display->setPlaceholderText(QString("x"));
+  x_display->setMaximumWidth(80);
+  x_display->setMaximumHeight(60);
+
+  xmin_display->setPlaceholderText(QString("X min"));
+  xmin_display->setMaximumWidth(60);
+
+  xmax_display->setPlaceholderText(QString("X max"));
+  xmax_display->setMaximumWidth(60);
+
+  step_display->setPlaceholderText(QString("step"));
+  step_display->setMaximumWidth(60);
+
+  ymin_display->setPlaceholderText(QString("Y min"));
+  ymin_display->setMaximumWidth(60);
+
+  ymax_display->setPlaceholderText(QString("Y max"));
+  ymax_display->setMaximumWidth(60);
 }
 
 void SmartCalc::DigitClicked() {
@@ -231,25 +243,25 @@ void SmartCalc::PrintPlot(const Controller& c) {
     return;
   }
 
-  int dots = (x_end - x_start) / step + 1; //CountDots(x_start, x_end, y_start, y_end);
+  int dots = (x_end - x_start) / step + 1;
   std::set <int> to_skip;
 
   int number = 0;
   for (double x = x_start; x <= x_end; x += step, ++number) {
     double res = c.Calculate(x);
-    std::cout << res << std::endl;
+    /* std::cout << res << std::endl; */
     if ((res < YMAX && res - y_end > EPS) || (res > YMIN && y_start - res > EPS)) {
       to_skip.insert(number);
       --dots;
     }
   }
 
-  std::cout << "to skip: ";
-  for (auto i : to_skip)
-    std::cout << i;
-  std::cout << std::endl;
+  /* std::cout << "to skip: "; */
+  /* for (auto i : to_skip) */
+  /*   std::cout << i; */
+  /* std::cout << std::endl; */
 
-  std::cout << "dots = " << dots << std::endl;
+  /* std::cout << "dots = " << dots << std::endl; */
 
   QVector<double> x(dots), y(dots);
   for (int i = 0, k = 0; i < dots; ++k) {
@@ -263,7 +275,7 @@ void SmartCalc::PrintPlot(const Controller& c) {
     if (y[i] > YMAX) y[i] = std::numeric_limits<double>::infinity();
     if (y[i] < YMIN) y[i] = -std::numeric_limits<double>::infinity();
     x_start += step;
-    std::cout << x[i] << ' ' << y[i] << std::endl;
+    /* std::cout << x[i] << ' ' << y[i] << std::endl; */
     ++i;
   }
 
@@ -272,12 +284,6 @@ void SmartCalc::PrintPlot(const Controller& c) {
   myplot->replot();
 
 }
-
-
-/* int SmartCalc::CountPoints(double xmin, double xmax, double ymin, double ymax) { */
-/*   int dots = (x_end - x_start) / step + 1; */
-/*   return dots; */
-/* } */
 
 void SmartCalc::SinClicked() {
   main_display->setText(main_display->text() + QString("sin("));
@@ -346,29 +352,28 @@ SmartCalc::~SmartCalc() {
 
   delete graph_btn;
 
-  /* delete bcsp_btn; */
-  /* delete ac_btn; */
-  /* delete x_btn; */
-  /* delete point_btn; */
-  /* delete lbracket_btn; */
-  /* delete rbracket_btn; */
-  /* delete div_btn; */
-  /* delete mult_btn; */
-  /* delete minus_btn; */
-  /* delete plus_btn; */
-  /* delete mod_btn; */
-  /* delete pow_btn; */
-  /* delete equal_btn; */
-  /* delete sin_btn; */
-  /* delete cos_btn; */
-  /* delete tan_btn; */
-  /* delete asin_btn; */
-  /* delete acos_btn; */
-  /* delete atan_btn; */
-  /* delete ln_btn; */
-  /* delete log_btn; */
-  /* delete sqrt_btn; */
+  delete bcsp_btn;
+  delete ac_btn;
+  delete x_btn;
+  delete point_btn;
+  delete lbracket_btn;
+  delete rbracket_btn;
+  delete div_btn;
+  delete mult_btn;
+  delete minus_btn;
+  delete plus_btn;
+  delete mod_btn;
+  delete pow_btn;
+  delete equal_btn;
+  delete sin_btn;
+  delete cos_btn;
+  delete tan_btn;
+  delete asin_btn;
+  delete acos_btn;
+  delete atan_btn;
+  delete ln_btn;
+  delete log_btn;
+  delete sqrt_btn;
 
-  /* delete main_layout; */
+  delete main_layout;
 }
-
