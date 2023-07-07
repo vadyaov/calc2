@@ -4,10 +4,12 @@
 #include <QWidget>
 
 #include "qcustomplot.h"
-#include "../controller.h"
 
 QT_BEGIN_NAMESPACE
 class QLineEdit;
+class GridLayout;
+class QRadioButton;
+class QLabel;
 QT_END_NAMESPACE
 class Button;
 

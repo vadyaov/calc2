@@ -3,6 +3,7 @@
 #include <stack>
 #include <cctype>
 #include <cmath>
+#include <stdexcept>
 
 #include "model.h"
 
