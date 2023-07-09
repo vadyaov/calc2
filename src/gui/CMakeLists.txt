@@ -22,6 +22,7 @@ set(PROJECT_SOURCES
         main.cc
         smartcalc.cc
         creditcalc.cc
+        depositcalc.cc
         qcustomplot.cpp
         button.cc
 )

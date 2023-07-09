@@ -3,13 +3,6 @@
 
 #include <QWidget>
 
-#include <QLineEdit>
-#include <QGridLayout>
-#include <QLabel>
-#include <QTextEdit>
-#include <QPushButton>
-#include <QRadioButton>
-
 #include "../controller.h"
 
 QT_BEGIN_NAMESPACE

@@ -1,5 +1,12 @@
 #include "creditcalc.h"
 
+#include <QLineEdit>
+#include <QGridLayout>
+#include <QLabel>
+#include <QTextEdit>
+#include <QPushButton>
+#include <QRadioButton>
+
 CreditCalc::CreditCalc(QWidget* parent) : QWidget(parent) {
   CreateWidgets();
   AddWidgets();
