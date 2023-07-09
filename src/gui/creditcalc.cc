@@ -4,13 +4,11 @@ CreditCalc::CreditCalc(QWidget* parent) : QWidget(parent) {
   CreateWidgets();
   AddWidgets();
 
-  connect(calculate, SIGNAL(clicked()), this, SLOT(CalcClicked()));
-
   setLayout(main_layout);
 }
 
 void CreditCalc::CreateWidgets() {
-  main_layout = new QGridLayout();
+  main_layout = new QGridLayout;
 
   amount_label = new QLabel(tr("Loan Amount"));
   term_label = new QLabel(tr("Loan Term"));
@@ -29,6 +27,8 @@ void CreditCalc::CreateWidgets() {
 
   annually = new QRadioButton(tr("Annually"));
   monthly = new QRadioButton(tr("Monthly"));
+
+  connect(calculate, SIGNAL(clicked()), this, SLOT(CalcClicked()));
 }
 
 void CreditCalc::AddWidgets() {
@@ -47,6 +47,7 @@ void CreditCalc::AddWidgets() {
   main_layout->addWidget(calculate, 6, 0, 6, 2, Qt::AlignTop);
 
   main_layout->addWidget(annually, 4, 1);
+  annually->setChecked(true);
   main_layout->addWidget(monthly, 5, 1);
 
 }
@@ -61,24 +62,27 @@ void CreditCalc::CalcClicked() {
 
   CheckEmptyLines(amount, year, month, rate);
 
-  if (!main_text->text().isEmpty()) return;
+  if (!main_text->toPlainText().isEmpty()) return;
 
   try {
-  Controller c(amount.toDouble(), rate->toDouble(),
-               year->toDouble * 12 + month->toDouble());
-  } catch (...) {
-    main_text->setPlainText(QString("Negative value error"));
+    Controller c(amount.toDouble(), rate.toDouble(),
+                 year.toDouble() * 12 + month.toDouble());
+    Credit::type t = annually->isChecked() ? Credit::Annually : Credit::Monthly;
+    QString out = QString::fromStdString(c.CreditData(t));
+    main_text->setPlainText(out);
+  } catch (std::exception &e) {
+    main_text->setPlainText(QString::fromStdString(e.what()));
   }
 }
 
 void CreditCalc::CheckEmptyLines(const QString& a, const QString& b,
                                  const QString& c, const QString& d) {
   if (a.isEmpty()) {
-    main_text->setPlainText(Qstring("Empty Amount"));
+    main_text->setPlainText(QString("Empty Amount"));
   } else if (b.isEmpty() && c.isEmpty()) {
-    main_text->setPlainText(Qstring("Empty Term"));
+    main_text->setPlainText(QString("Empty Term"));
   } else if (d.isEmpty()) {
-    main_text->setPlainText(Qstring("Empty Rate"));
+    main_text->setPlainText(QString("Empty Rate"));
   }
 }
 

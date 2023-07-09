@@ -2,6 +2,14 @@
 #define CREDITCALC_H
 
 #include <QWidget>
+
+#include <QLineEdit>
+#include <QGridLayout>
+#include <QLabel>
+#include <QTextEdit>
+#include <QPushButton>
+#include <QRadioButton>
+
 #include "../controller.h"
 
 QT_BEGIN_NAMESPACE
@@ -12,7 +20,6 @@ class QTextEdit;
 class QPushButton;
 class QRadioButton;
 QT_END_NAMESPACE
-class Button;
 
 class CreditCalc : public QWidget {
     Q_OBJECT
@@ -27,6 +34,8 @@ class CreditCalc : public QWidget {
   private:
     void CreateWidgets();
     void AddWidgets();
+    void CheckEmptyLines(const QString& a, const QString& b,
+                                 const QString& c, const QString& d);
 
     QGridLayout *main_layout;
 

@@ -1,6 +1,5 @@
 #include "smartcalc.h"
 #include "button.h"
-#include "../controller.h"
 
 #include <iostream>
 #include <set>

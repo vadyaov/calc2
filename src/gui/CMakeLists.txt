@@ -16,14 +16,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Qt6 CONFIG REQUIRED COMPONENTS Widgets PrintSupport)
 
 set(PROJECT_SOURCES
+        ../calclogic/credit.cc
+        ../calclogic/model.cc
+        ../controller.h
         main.cc
         smartcalc.cc
         creditcalc.cc
         qcustomplot.cpp
         button.cc
-        ../calclogic/credit.cc
-        ../calclogic/model.cc
-        ../controller.h
 )
 
 add_executable(smartcalc

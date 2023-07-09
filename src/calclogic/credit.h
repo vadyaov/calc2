@@ -1,21 +1,21 @@
-#ifndef CREDITCALC_H
-#define CREDITCALC_H
+#ifndef CREDIT_H
+#define CREDIT_H
+
+#include <string>
 
 class Credit {
-  private:
-    double amount;
-    double rate;
-    double period;
+  double amount;
+  double rate;
+  double period;
 
   public:
-    enum CompoundType {Annually, Monthly};
-    Credit();
-    Credit(double, double, double);
-    ~Credit();
+    enum type {Annually, Monthly};
 
-    double MonthPayment();
-    double TotalPayment();
-    double OverPayment();
+    Credit() = delete;
+    Credit(double, double, double);
+    ~Credit() = default;
+
+    std::string GetCreditInfo(type t) const;
 };
 
-#endif //  CREDITCALC_H
+#endif //  CREDIT_H

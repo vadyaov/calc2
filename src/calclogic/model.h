@@ -3,13 +3,11 @@
 
 #include <string>
 
- /* Модель - бизнес логика приложения, никак не связана с представлением. */
-
 class Model {
   private:
     std::string expression;
   public:
-    Model() : expression{} {}
+    Model() = delete;
     explicit Model(const std::string&);
     ~Model() = default;
     double CalculateExpression(const double) const;

@@ -4,6 +4,7 @@
 #include <QWidget>
 
 #include "qcustomplot.h"
+#include "../controller.h"
 
 QT_BEGIN_NAMESPACE
 class QLineEdit;
@@ -54,13 +55,11 @@ class SmartCalc : public QWidget {
     void TuneWidgets();
     void InitGraph(QCustomPlot *plot);
     void PrintPlot(const Controller&);
-    /* int CountDots(double, double, double, double); */
 
-    /* QTabWidget *calc_widget; */
-    /* QFrame *frame_1, *frame_2, *frame_3; */
-    QGridLayout *main_layout; //, *credit_layout, *deposit_layout;
 
   /* -------------------------MainCalc Widgets---------------------------*/
+
+    QGridLayout *main_layout;
 
     Button *DigitButtons[NumDigitButtons];
 
