@@ -14,6 +14,7 @@
 DepositCalc::DepositCalc(QWidget* parent) : QWidget(parent) {
   CreateWidgets();
   AddWidgets();
+  SetWidgets();
 
   setLayout(main_layout);
 }
@@ -30,6 +31,7 @@ void DepositCalc::CreateWidgets() {
   repl_amount_label = new QLabel(tr("Replanish Amount"));
   withdrawals_label = new QLabel(tr("Partial Withdrawals"));
   remove_amount_label = new QLabel(tr("Remove Amount"));
+  capitalization = new QLabel(tr("Capitalization"));
 
   amount_line = new QLineEdit;
   rate_line = new QLineEdit;
@@ -41,17 +43,14 @@ void DepositCalc::CreateWidgets() {
 
   calculate = new QPushButton(tr("Calculate"));
 
-  capitalization = new QRadioButton(tr("Capitalization"));
 
   payment_freq_box = new QComboBox;
   depo_repl_box = new QComboBox;
   depo_remove_box = new QComboBox; 
+  cap_box = new QComboBox;
    
   first_day = new QDateEdit;
   last_day = new QDateEdit;
-
-  first_day->setMaximumWidth(130);
-  last_day->setMaximumWidth(130);
 
   date_layout = new QHBoxLayout;
 }
@@ -82,10 +81,11 @@ void DepositCalc::AddWidgets() {
   main_layout->addWidget(payment_freq_box, 5, 1);
   main_layout->addWidget(depo_repl_box, 7, 1);
   main_layout->addWidget(depo_remove_box, 9, 1);
+  main_layout->addWidget(cap_box, 6, 1);
 
   main_layout->addLayout(date_layout, 1, 1, 1, 2);
 
-  date_layout->addWidget(first_day, 0);//, Qt::AlignLeft);
+  date_layout->addWidget(first_day, 0);
   date_layout->addWidget(last_day, 1, Qt::AlignLeft);
 
   main_layout->setColumnStretch(0, 1);
@@ -93,6 +93,50 @@ void DepositCalc::AddWidgets() {
 }
 
 void DepositCalc::CalcClicked() {
+  // CheckEmptyLines()
+}
+
+void DepositCalc::SetWidgets() {
+  SetComboBoxItems();
+  
+  first_day->setDisplayFormat(QString("dd.MM.yyyy"));
+  last_day->setDisplayFormat(QString("dd.MM.yyyy"));
+  first_day->setMinimumDate(QDate::currentDate());
+  last_day->setMinimumDate(QDate::currentDate());
+
+  tax_line->setPlaceholderText(QString("%"));
+  rate_line->setPlaceholderText(QString("%"));
+  amount_line->setPlaceholderText(QString("$"));
+  repl_amount_line->setPlaceholderText(QString("$"));
+  remove_amount_line->setPlaceholderText(QString("$"));
+}
+
+void DepositCalc::SetComboBoxItems() {
+  payment_freq_box->addItem(QString("day"));
+  payment_freq_box->addItem(QString("week"));
+  payment_freq_box->addItem(QString("1 month"));
+  payment_freq_box->addItem(QString("quarter"));
+  payment_freq_box->addItem(QString("6 month"));
+  payment_freq_box->addItem(QString("1 year"));
+
+  depo_repl_box->addItem(QString("--"));
+  depo_repl_box->addItem(QString("1 month"));
+  depo_repl_box->addItem(QString("2 month"));
+  depo_repl_box->addItem(QString("quarter"));
+  depo_repl_box->addItem(QString("4 month"));
+  depo_repl_box->addItem(QString("6 month"));
+  depo_repl_box->addItem(QString("1 year"));
+
+  depo_remove_box->addItem(QString("--"));
+  depo_remove_box->addItem(QString("1 month"));
+  depo_remove_box->addItem(QString("2 month"));
+  depo_remove_box->addItem(QString("quarter"));
+  depo_remove_box->addItem(QString("4 month"));
+  depo_remove_box->addItem(QString("6 month"));
+  depo_remove_box->addItem(QString("1 year"));
+
+  cap_box->addItem(QString("NO"));
+  cap_box->addItem(QString("YES"));
 }
 
 DepositCalc::~DepositCalc() {
@@ -122,6 +166,7 @@ DepositCalc::~DepositCalc() {
   delete payment_freq_box;
   delete depo_repl_box;
   delete depo_remove_box;
+  delete cap_box;
    
   delete first_day;
   delete last_day;

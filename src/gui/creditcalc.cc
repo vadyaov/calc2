@@ -5,11 +5,12 @@
 #include <QLabel>
 #include <QTextEdit>
 #include <QPushButton>
-#include <QRadioButton>
+#include <QComboBox>
 
 CreditCalc::CreditCalc(QWidget* parent) : QWidget(parent) {
   CreateWidgets();
   AddWidgets();
+  SetWidgets();
 
   setLayout(main_layout);
 }
@@ -30,10 +31,9 @@ void CreditCalc::CreateWidgets() {
   main_text = new QTextEdit();
 
   calculate = new QPushButton(tr("Calculate"));
-  calculate->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+  /* calculate->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred); */
 
-  annually = new QRadioButton(tr("Annually"));
-  monthly = new QRadioButton(tr("Monthly"));
+  compound_box = new QComboBox;
 
   connect(calculate, SIGNAL(clicked()), this, SLOT(CalcClicked()));
 }
@@ -51,12 +51,22 @@ void CreditCalc::AddWidgets() {
 
   main_layout->addWidget(main_text, 7, 0, 8, 2, Qt::AlignTop);
 
-  main_layout->addWidget(calculate, 6, 0, 6, 2, Qt::AlignTop);
+  main_layout->addWidget(calculate, 6, 0);
 
-  main_layout->addWidget(annually, 4, 1);
-  annually->setChecked(true);
-  main_layout->addWidget(monthly, 5, 1);
+  main_layout->addWidget(compound_box, 4, 1);
 
+  main_layout->setColumnStretch(0, 1);
+  main_layout->setColumnStretch(1, 1);
+}
+
+void CreditCalc::SetWidgets() {
+  compound_box->addItem(QString("annually"));
+  compound_box->addItem(QString("monthly"));
+
+  amount_line->setPlaceholderText(QString("$"));
+  term_y_line->setPlaceholderText(QString("year"));
+  term_m_line->setPlaceholderText(QString("month"));
+  rate_line->setPlaceholderText(QString("%"));
 }
 
 void CreditCalc::CalcClicked() {
@@ -74,7 +84,8 @@ void CreditCalc::CalcClicked() {
   try {
     Controller c(amount.toDouble(), rate.toDouble(),
                  year.toDouble() * 12 + month.toDouble());
-    Credit::type t = annually->isChecked() ? Credit::Annually : Credit::Monthly;
+    Credit::type t =  compound_box->currentText() == QString("annually")
+      ? Credit::Annually : Credit::Monthly;
     QString out = QString::fromStdString(c.CreditData(t));
     main_text->setPlainText(out);
   } catch (std::exception &e) {
@@ -110,6 +121,5 @@ CreditCalc::~CreditCalc() {
 
   delete calculate;
 
-  delete annually;
-  delete monthly;
+  delete compound_box;
 }

@@ -30,11 +30,14 @@ class DepositCalc : public QWidget {
   private:
     void CreateWidgets();
     void AddWidgets();
+    void SetWidgets();
+    void SetComboBoxItems();
 
     QGridLayout *main_layout;
 
     QLabel *amount_label, *term_label, *rate_label, *tax_label, *freq_label,
-           *depo_repl_label, *repl_amount_label, *withdrawals_label, *remove_amount_label;
+           *depo_repl_label, *repl_amount_label, *withdrawals_label, *remove_amount_label,
+           *capitalization;
 
     QLineEdit *amount_line, *rate_line, *tax_line, *repl_amount_line, *remove_amount_line;
 
@@ -42,9 +45,7 @@ class DepositCalc : public QWidget {
 
     QPushButton *calculate;
 
-    QRadioButton *capitalization;
-
-    QComboBox *payment_freq_box, *depo_repl_box, *depo_remove_box;
+    QComboBox *payment_freq_box, *depo_repl_box, *depo_remove_box, *cap_box;
 
     QDateEdit *first_day, *last_day;
 

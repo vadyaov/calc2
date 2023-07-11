@@ -11,7 +11,7 @@ class QGridLayout;
 class QLabel;
 class QTextEdit;
 class QPushButton;
-class QRadioButton;
+class QComboBox;
 QT_END_NAMESPACE
 
 class CreditCalc : public QWidget {
@@ -27,6 +27,7 @@ class CreditCalc : public QWidget {
   private:
     void CreateWidgets();
     void AddWidgets();
+    void SetWidgets();
     void CheckEmptyLines(const QString& a, const QString& b,
                                  const QString& c, const QString& d);
 
@@ -40,7 +41,7 @@ class CreditCalc : public QWidget {
 
     QPushButton *calculate;
 
-    QRadioButton *annually, *monthly;
+    QComboBox *compound_box;
 };
 
 #endif //  CREDITCALC_H
