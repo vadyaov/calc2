@@ -26,14 +26,6 @@ struct Rate {
   Rate(const Rate& other) : dep_rate{other.dep_rate}, tax_rate{other.tax_rate} {}
 };
 
-struct Profit {
-  double income;
-  double tax;
-
-  Profit(double in, double t) : income{in}, tax{t} {}
-  Profit(const Profit& other) : income{other.income}, tax{other.tax} {}
-};
-
 class Deposit {
   Amount amounts;
   Rate rates;
