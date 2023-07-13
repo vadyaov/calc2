@@ -53,6 +53,8 @@ void DepositCalc::CreateWidgets() {
   last_day = new QDateEdit;
 
   date_layout = new QHBoxLayout;
+
+  connect(calculate, SIGNAL(clicked()), this, SLOT(CalcClicked()));
 }
 
 void DepositCalc::AddWidgets() {
@@ -94,6 +96,23 @@ void DepositCalc::AddWidgets() {
 
 void DepositCalc::CalcClicked() {
   // CheckEmptyLines()
+  double depo = amount_line->text().toDouble();
+  double repl = repl_amount_line->text().toDouble();
+  double remo = remove_amount_line->text().toDouble();
+
+  double rate = rate_line->text().toDouble();
+  double tax = tax_line->text().toDouble();
+
+  std::string f_day = first_day->text().toStdString();
+  std::string l_day = last_day->text().toStdString();
+
+  int pay_index = payment_freq_box->currentIndex();
+  int repl_index = depo_repl_box->currentIndex();
+  int remove_index = depo_remove_box->currentIndex();
+  bool cap_index = cap_box->currentIndex() == 0 ? false : true;
+
+  Controller c({depo, repl, remo}, {rate, tax}, Controller::pair{f_day, l_day});
+  std::string data = c.DepositData(cap_index, pay_index, repl_index, remove_index);
 }
 
 void DepositCalc::SetWidgets() {

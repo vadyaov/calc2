@@ -16,6 +16,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Qt6 CONFIG REQUIRED COMPONENTS Widgets PrintSupport)
 
 set(PROJECT_SOURCES
+        ../calclogic/deposit.cc
         ../calclogic/credit.cc
         ../calclogic/model.cc
         ../controller.h

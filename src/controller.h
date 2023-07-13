@@ -35,7 +35,22 @@ class Controller {
     }
 
     double Calculate(const double x) const { return m->CalculateExpression(x); }
+
     std::string CreditData(Credit::type t) { return c->GetCreditInfo(t); }
+
+    std::string DepositData(bool capitalization, int pay_idx, int repl_idx = 0,
+                            int rem_idx = 0) {
+
+      Deposit::F pay_freq = FindCorrectIdx(pay_idx);
+      Deposit::F repl_freq = repl_idx == 0 ? Deposit::F::NO : Deposit::F(repl_idx + 2);
+      Deposit::F rem_freq = rem_idx == 0 ? Deposit::F::NO : Deposit::F(rem_idx + 2);
+
+      std::cout << pay_freq << ' ' << repl_freq << ' ' << rem_freq << std::endl;
+
+      std::string result = d->CalculateProfit(pay_freq, repl_freq, rem_freq, capitalization);
+
+      return result;
+    }
 
 
 };
