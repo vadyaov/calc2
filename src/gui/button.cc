@@ -8,7 +8,7 @@ Button::Button(const QString &text, QWidget *parent)
 
 QSize Button::sizeHint() const {
     QSize size = QToolButton::sizeHint();
-    size.rheight() += 10;
+    size.rheight() += 5;
     size.rwidth() = qMax(size.width(), size.height());
     return size;
 }

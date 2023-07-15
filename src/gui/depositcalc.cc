@@ -40,6 +40,7 @@ void DepositCalc::CreateWidgets() {
   remove_amount_line = new QLineEdit;
 
   main_text = new QTextEdit;
+  main_text->setReadOnly(true);
 
   calculate = new QPushButton(tr("Calculate"));
 
@@ -91,7 +92,7 @@ void DepositCalc::AddWidgets() {
   date_layout->addWidget(last_day, 1, Qt::AlignLeft);
 
   main_layout->setColumnStretch(0, 1);
-  main_layout->setColumnStretch(1, 1);
+  main_layout->setColumnStretch(1, 2);
 }
 
 void DepositCalc::CalcClicked() {
@@ -113,6 +114,8 @@ void DepositCalc::CalcClicked() {
 
   Controller c({depo, repl, remo}, {rate, tax}, Controller::pair{f_day, l_day});
   std::string data = c.DepositData(cap_index, pay_index, repl_index, remove_index);
+
+  main_text->setPlainText(QString::fromStdString(data));
 }
 
 void DepositCalc::SetWidgets() {

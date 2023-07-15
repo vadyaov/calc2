@@ -29,9 +29,9 @@ void CreditCalc::CreateWidgets() {
   rate_line = new QLineEdit();
 
   main_text = new QTextEdit();
+  main_text->setReadOnly(true);
 
   calculate = new QPushButton(tr("Calculate"));
-  /* calculate->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred); */
 
   compound_box = new QComboBox;
 
@@ -56,7 +56,7 @@ void CreditCalc::AddWidgets() {
   main_layout->addWidget(compound_box, 4, 1);
 
   main_layout->setColumnStretch(0, 1);
-  main_layout->setColumnStretch(1, 1);
+  main_layout->setColumnStretch(1, 2);
 }
 
 void CreditCalc::SetWidgets() {

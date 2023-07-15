@@ -5,15 +5,15 @@
 #include <iostream>
 
 struct Date {
-  int day = 0;
-  int month = 0;
-  int year = 0;
+  int day;
+  int month;
+  int year;
 
   /* only 'dd.MM.yyy' format */
   explicit Date(const std::string& date) {
-    day += (date[0] - '0') * 10 + (date[1] - '0');
-    month += (date[3] - '0') * 10 + (date[4] - '0');
-    year += (date[6] - '0') * 1000 + (date[7] - '0') * 100 +
+    day = (date[0] - '0') * 10 + (date[1] - '0');
+    month = (date[3] - '0') * 10 + (date[4] - '0');
+    year = (date[6] - '0') * 1000 + (date[7] - '0') * 100 +
             (date[8] - '0') * 10 + (date[9] - '0');
   }
 
@@ -51,7 +51,7 @@ std::string Deposit::CalculateProfit(F pay, F replanish, F withdraw, bool cap) {
   double cap_period = Period(pay), add_period = Period(replanish),
          rem_period = Period(withdraw);
 
-  double income{0}, tax{0};
+  double income{0};
 
   std::cout << cap_period << ' ' << add_period << ' ' << rem_period << std::endl;
 
@@ -72,12 +72,13 @@ std::string Deposit::CalculateProfit(F pay, F replanish, F withdraw, bool cap) {
         amounts.dep_amount -= amounts.rem_amount;
     }
     ++i;
+    if (amounts.dep_amount <= 0) break;
   }
 
   if (i == period && cap) amounts.dep_amount += percents;
   income += percents;
 
-  std::string result {"Income: "};                                       
+  std::string result {"\nIncome: "};                                       
   result += std::to_string(std::floor(income));                                 
   result += "\nDeposit: ";                                            
   result += std::to_string(std::floor(amounts.dep_amount));                                
