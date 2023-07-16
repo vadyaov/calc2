@@ -1,11 +1,10 @@
-#include <iostream>
 #include <vector>
 #include <stack>
 #include <cctype>
 #include <cmath>
 #include <stdexcept>
 
-#include "model.h"
+#include "../includes/calcul.h"
 
 static bool IsDigit(char ch) {
   return std::isdigit(static_cast<unsigned char>(ch));
@@ -102,6 +101,8 @@ static std::string MakePolish(const std::string& src) {
   std::stack<char> sstack;
 
   for (std::string::const_iterator i = src.cbegin(); i != src.cend(); ++i) {
+    if (*i == ' ') continue;
+
     if (*i == 'x') {
       AppendToOutput(*i, out);
     } else if (IsDigit(*i)) {
@@ -247,19 +248,10 @@ void FunctionAction(std::stack<double>& nstack, char s) {
 Model::Model(const std::string& src) : expression{src} {
   if (src.empty()) throw std::length_error("Empty expression");
 
-  std::cout << "Expression:" << expression << std::endl;
   expression = MakePolish(ReplaceFunctionsWithSymbols(expression));
-  std::cout << "Polish    :" << expression << std::endl;
 }
 
-// мысль по оптимизации: мне не нравится момент, когда есть 'x' в выражении:
-// получается, что приходится для каждого нового значение 'x' выполнять преобразовние
-// строки в польскую нотацию, а это явно лишняя работа. 
-// идея: разделить Calculate и MakePolish. то есть сначала выполняется MakePolish,
-// а после - Calculate. Внутри Calculate подставляются только значения для икс (если необходимо).
-// Если же икс меняется (строим график), делаем Calculate для набора точек.
 double Model::CalculateExpression(const double x) const {
-  /* std::cout << "Polish:" << expression << std::endl; */
 
   std::stack<double> nstack;
 

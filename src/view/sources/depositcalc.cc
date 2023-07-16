@@ -1,4 +1,4 @@
-#include "depositcalc.h"
+#include "../includes/depositcalc.h"
 
 #include <QLineEdit>
 #include <QGridLayout>
@@ -42,7 +42,7 @@ void DepositCalc::CreateWidgets() {
   main_text = new QTextEdit;
   main_text->setReadOnly(true);
 
-  calculate = new QPushButton(tr("Calculate"));
+  calculate = new QPushButton(tr("CALCULATE"));
 
 
   payment_freq_box = new QComboBox;
@@ -96,13 +96,9 @@ void DepositCalc::AddWidgets() {
 }
 
 void DepositCalc::CalcClicked() {
-  // CheckEmptyLines()
-  double depo = amount_line->text().toDouble();
-  double repl = repl_amount_line->text().toDouble();
-  double remo = remove_amount_line->text().toDouble();
-
-  double rate = rate_line->text().toDouble();
-  double tax = tax_line->text().toDouble();
+  main_text->clear();
+  CheckEmptyLines();
+  if (!main_text->toPlainText().isEmpty()) return;
 
   std::string f_day = first_day->text().toStdString();
   std::string l_day = last_day->text().toStdString();
@@ -112,10 +108,34 @@ void DepositCalc::CalcClicked() {
   int remove_index = depo_remove_box->currentIndex();
   bool cap_index = cap_box->currentIndex() == 0 ? false : true;
 
-  Controller c({depo, repl, remo}, {rate, tax}, Controller::pair{f_day, l_day});
-  std::string data = c.DepositData(cap_index, pay_index, repl_index, remove_index);
+  double depo = amount_line->text().toDouble();
+  double repl = !repl_index ? 0.0 : repl_amount_line->text().toDouble();
+  double remo = !remove_index ? 0.0 : remove_amount_line->text().toDouble();
 
-  main_text->setPlainText(QString::fromStdString(data));
+  double rate = rate_line->text().toDouble();
+  double tax = tax_line->text().toDouble();
+
+  try {
+    Controller c({depo, repl, remo}, {rate, tax}, Controller::pair{f_day, l_day});
+    std::string data = c.DepositData(cap_index, pay_index, repl_index, remove_index);
+    main_text->setPlainText(QString::fromStdString(data));
+  } catch (std::exception& e) {
+    main_text->setPlainText(QString::fromStdString(e.what()));
+  }
+}
+
+void DepositCalc::CheckEmptyLines() {
+  if (amount_line->text().isEmpty()) {
+    main_text->setPlainText(QString("Empty Deposit Amount"));
+  } else if (rate_line->text().isEmpty()) {
+    main_text->setPlainText(QString("Empty Interest Rate"));
+  } else if (tax_line->text().isEmpty()) {
+    main_text->setPlainText(QString("Empty Tax Rate"));
+  } else if (depo_repl_box->currentIndex() != 0 && repl_amount_line->text().isEmpty()) {
+    main_text->setPlainText(QString("Empty Replanish Amount"));
+  } else if (depo_remove_box->currentIndex() != 0 && remove_amount_line->text().isEmpty()) {
+    main_text->setPlainText(QString("Empty Remove Amount"));
+  }
 }
 
 void DepositCalc::SetWidgets() {

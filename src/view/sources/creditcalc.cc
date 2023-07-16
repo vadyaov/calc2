@@ -1,4 +1,4 @@
-#include "creditcalc.h"
+#include "../includes/creditcalc.h"
 
 #include <QLineEdit>
 #include <QGridLayout>
@@ -31,7 +31,7 @@ void CreditCalc::CreateWidgets() {
   main_text = new QTextEdit();
   main_text->setReadOnly(true);
 
-  calculate = new QPushButton(tr("Calculate"));
+  calculate = new QPushButton(tr("CALCULATE"));
 
   compound_box = new QComboBox;
 
@@ -72,18 +72,17 @@ void CreditCalc::SetWidgets() {
 void CreditCalc::CalcClicked() {
   main_text->clear();
 
-  QString amount = amount_line->text();
-  QString year = term_y_line->text();
-  QString month = term_m_line->text();
-  QString rate = rate_line->text();
-
-  CheckEmptyLines(amount, year, month, rate);
+  CheckEmptyLines();
 
   if (!main_text->toPlainText().isEmpty()) return;
 
+  double amount = amount_line->text().toDouble();
+  double year = term_y_line->text().toDouble();
+  double month = term_m_line->text().toDouble();
+  double rate = rate_line->text().toDouble();
+
   try {
-    Controller c(amount.toDouble(), rate.toDouble(),
-                 year.toDouble() * 12 + month.toDouble());
+    Controller c(amount, year, month, rate);
     Credit::type t =  compound_box->currentText() == QString("annually")
       ? Credit::Annually : Credit::Monthly;
     QString out = QString::fromStdString(c.CreditData(t));
@@ -93,13 +92,12 @@ void CreditCalc::CalcClicked() {
   }
 }
 
-void CreditCalc::CheckEmptyLines(const QString& a, const QString& b,
-                                 const QString& c, const QString& d) {
-  if (a.isEmpty()) {
+void CreditCalc::CheckEmptyLines() {
+  if (amount_line->text().isEmpty()) {
     main_text->setPlainText(QString("Empty Amount"));
-  } else if (b.isEmpty() && c.isEmpty()) {
+  } else if (term_y_line->text().isEmpty() && term_m_line->text().isEmpty()) {
     main_text->setPlainText(QString("Empty Term"));
-  } else if (d.isEmpty()) {
+  } else if (rate_line->text().isEmpty()) {
     main_text->setPlainText(QString("Empty Rate"));
   }
 }

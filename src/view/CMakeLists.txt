@@ -15,22 +15,31 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
 find_package(Qt6 CONFIG REQUIRED COMPONENTS Widgets PrintSupport)
 
+set(PROJECT_INCLUDES
+  includes/smartcalc.h
+  includes/creditcalc.h
+  includes/depositcalc.h
+  includes/button.h
+)
+
 set(PROJECT_SOURCES
-        ../calclogic/deposit.cc
-        ../calclogic/credit.cc
-        ../calclogic/model.cc
-        ../controller.h
+        ../model/sources/deposit.cc
+        ../model/sources/credit.cc
+        ../model/sources/calcul.cc
+        ../controller/controller.cc
+
         main.cc
-        smartcalc.cc
-        creditcalc.cc
-        depositcalc.cc
-        qcustomplot.cpp
-        button.cc
+        sources/smartcalc.cc
+        sources/creditcalc.cc
+        sources/depositcalc.cc
+        qcustomplot/qcustomplot.cpp
+        sources/button.cc
 )
 
 add_executable(smartcalc
         # MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        ${PROJECT_INCLUDES}
 )
 
 target_link_libraries(smartcalc Qt6::Widgets Qt6::PrintSupport)

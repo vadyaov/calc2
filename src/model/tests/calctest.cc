@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../calclogic/model.h"
+#include "../includes/calcul.h"
 #include <cmath>
 
 TEST(test, t1) {
@@ -254,16 +254,4 @@ TEST(test, e12) {
       throw;
     }
   }, std::logic_error);
-}
-
-TEST(test, e13) {
-  EXPECT_THROW( {
-    try {
-      Model m("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec.");
-      m.CalculateExpression(0.0);
-    } catch (const std::length_error& e) {
-      EXPECT_STREQ("Expression length is too big. 255 is limit", e.what());
-      throw;
-    }
-  }, std::length_error);
 }

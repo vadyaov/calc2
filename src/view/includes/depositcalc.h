@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-#include "../controller.h"
+#include "../../controller/controller.h"
 
 QT_BEGIN_NAMESPACE
 class QLineEdit;
@@ -32,6 +32,7 @@ class DepositCalc : public QWidget {
     void AddWidgets();
     void SetWidgets();
     void SetComboBoxItems();
+    void CheckEmptyLines();
 
     QGridLayout *main_layout;
 

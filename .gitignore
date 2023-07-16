@@ -31,4 +31,5 @@
 *.out
 *.app
 
-src/gui/build/
+./src/model/build/*
+./src/view/build/*

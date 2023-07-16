@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-#include "../controller.h"
+#include "../../controller/controller.h"
 
 QT_BEGIN_NAMESPACE
 class QLineEdit;
@@ -28,8 +28,7 @@ class CreditCalc : public QWidget {
     void CreateWidgets();
     void AddWidgets();
     void SetWidgets();
-    void CheckEmptyLines(const QString& a, const QString& b,
-                                 const QString& c, const QString& d);
+    void CheckEmptyLines();
 
     QGridLayout *main_layout;
 

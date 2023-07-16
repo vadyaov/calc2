@@ -1,5 +1,5 @@
-#include "smartcalc.h"
-#include "button.h"
+#include "../includes/smartcalc.h"
+#include "../includes/button.h"
 
 #include <iostream>
 #include <set>
@@ -19,8 +19,8 @@ SmartCalc::SmartCalc(QWidget* parent) : QWidget(parent) {
 }
 
 void SmartCalc::CreateWidgets() {
-  main_display = new QLineEdit();
-  x_display = new QLineEdit();
+  main_display = new QLineEdit;
+  x_display = new QLineEdit;
   xmin_display = new QLineEdit(tr("-10"));
   xmax_display = new QLineEdit(tr("+10"));
   step_display = new QLineEdit(tr("0.1"));
@@ -28,7 +28,7 @@ void SmartCalc::CreateWidgets() {
   ymax_display = new QLineEdit(tr("+10"));
 
   graph_btn = new QRadioButton("plot", this);
-  myplot = new QCustomPlot();
+  myplot = new QCustomPlot;
 
   main_layout = new QGridLayout;
 
@@ -50,6 +50,7 @@ void SmartCalc::CreateWidgets() {
   plus_btn = CreateButton(tr("+"), SLOT(OtherClicked()));
   mod_btn = CreateButton(tr("mod"), SLOT(OtherClicked()));
   pow_btn = CreateButton(tr("^"), SLOT(OtherClicked()));
+
   sin_btn = CreateButton(tr("sin"), SLOT(FunctionClicked()));
   cos_btn = CreateButton(tr("cos"), SLOT(FunctionClicked()));
   tan_btn = CreateButton(tr("tan"), SLOT(FunctionClicked()));
@@ -106,9 +107,9 @@ void SmartCalc::AddWidgets() {
   #endif
 
   #if defined __APPLE__ && defined __MACH__
-  /* main_layout->addWidget(xmin_display, 58, 0); */
-  /* main_layout->addWidget(xmax_display, 58, 1); */
-  /* main_layout->addWidget(step_display, 58, 3); */
+  main_layout->addWidget(xmin_display, 58, 0); // change in school
+  main_layout->addWidget(xmax_display, 58, 1);
+  main_layout->addWidget(step_display, 58, 3);
   #else
   main_layout->addWidget(xmin_display, 58, 0);
   main_layout->addWidget(xmax_display, 58, 1);
@@ -128,46 +129,43 @@ void SmartCalc::TuneWidgets() {
   main_font.setPointSize(main_font.pointSize() + 8);
   main_display->setFont(main_font);
 
-  x_display->setAlignment(Qt::AlignCenter);
-  x_display->setPlaceholderText(QString("x"));
+  xmin_display->setMaximumWidth(60);
+  ymin_display->setMaximumWidth(60);
+  xmax_display->setMaximumWidth(60);
+  ymax_display->setMaximumWidth(60);
+  step_display->setMaximumWidth(60);
   x_display->setMaximumWidth(80);
   x_display->setMaximumHeight(60);
-  x_display->setStyleSheet("color: grey; background-color: lightgrey;");
+
   xmin_display->setAlignment(Qt::AlignCenter);
   ymin_display->setAlignment(Qt::AlignCenter);
   xmax_display->setAlignment(Qt::AlignCenter);
   ymax_display->setAlignment(Qt::AlignCenter);
   step_display->setAlignment(Qt::AlignCenter);
+  x_display->setAlignment(Qt::AlignCenter);
+
+  xmin_display->setPlaceholderText(QString("X min"));
+  xmax_display->setPlaceholderText(QString("X max"));
+  ymin_display->setPlaceholderText(QString("Y min"));
+  ymax_display->setPlaceholderText(QString("Y max"));
+  step_display->setPlaceholderText(QString("step"));
+  x_display->setPlaceholderText(QString("x"));
+
+  x_display->setStyleSheet("color: grey; background-color: lightgrey;");
   xmin_display->setStyleSheet("color: blue; background-color: lightgrey;");
   xmax_display->setStyleSheet("color: blue; background-color: lightgrey;");
   ymin_display->setStyleSheet("color: green; background-color: lightgrey;");
   ymax_display->setStyleSheet("color: green; background-color: lightgrey;");
-
   equal_btn->setStyleSheet("color: black; background-color: lightBlue;");
-  for (auto ptr : DigitButtons)
-    ptr->setStyleSheet("color: black; background-color: grey;");
   point_btn->setStyleSheet("color: black; background-color: grey;");
   graph_btn->setStyleSheet("color: purple; background-color: white;");
+  for (auto ptr : DigitButtons)
+    ptr->setStyleSheet("color: black; background-color: grey;");
   bcsp_btn->setIcon(style()->standardIcon(QStyle::SP_ArrowBack));
 
   QFont x_font = x_display->font();
   x_font.setPointSize(x_font.pointSize() + 2);
   x_display->setFont(x_font);
-
-  xmin_display->setPlaceholderText(QString("X min"));
-  xmin_display->setMaximumWidth(60);
-
-  xmax_display->setPlaceholderText(QString("X max"));
-  xmax_display->setMaximumWidth(60);
-
-  step_display->setPlaceholderText(QString("step"));
-  step_display->setMaximumWidth(60);
-
-  ymin_display->setPlaceholderText(QString("Y min"));
-  ymin_display->setMaximumWidth(60);
-
-  ymax_display->setPlaceholderText(QString("Y max"));
-  ymax_display->setMaximumWidth(60);
 
   QFont f = plus_btn->font();
   f.setPointSize(f.pointSize() + 4);

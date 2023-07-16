@@ -1,9 +1,7 @@
 #ifndef DEPOSIT_H
 #define DEPOSIT_H
 
-#include <tuple>
 #include <string>
-#include <iostream>
 
 struct Amount {
   double dep_amount;
@@ -35,18 +33,7 @@ class Deposit {
     using F = enum Frequency {NO, DAY, WEEK, MONTH1, MONTH2, QUARTER, MONTH4, MONTH6, YEAR};
 
     Deposit() = delete;
-    Deposit(const Amount& a, const Rate& r, std::size_t p) : amounts{a},
-                                                              rates{r},
-                                                              period{p} {
-      std::cout << "deposit amount: " << amounts.dep_amount <<
-                 "\nreplani amount: " << amounts.rep_amount <<
-                 "\nremove  amount: " << amounts.rem_amount << std::endl;
-
-      std::cout << "\nRate : " << rates.dep_rate << "\nTax:  " << rates.tax_rate << std::endl;
-
-      std::cout << "\nPeriod: " << p << std::endl;
-
-    }
+    Deposit(const Amount& a, const Rate& r, std::size_t p);
     ~Deposit() = default;
 
     std::string CalculateProfit(F pay, F replanish, F withdraw, bool cap);

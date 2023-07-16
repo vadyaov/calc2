@@ -1,8 +1,10 @@
-#include "deposit.h"
+#include "../includes/deposit.h"
 
 #include <utility>
 #include <cmath>
 #include <iostream>
+
+extern double RoundUp(double, int);
 
 struct Date {
   int day;
@@ -28,6 +30,24 @@ struct Date {
     return jdn;
   }
 };
+
+Deposit::Deposit(const Amount& a, const Rate& r, std::size_t p) : amounts{a},
+                                                          rates{r},
+                                                          period{p} {
+  if (std::signbit(amounts.dep_amount) || std::signbit(amounts.rep_amount) ||
+      std::signbit(amounts.rem_amount) || std::signbit(rates.dep_rate) ||
+      std::signbit(rates.tax_rate))
+    throw std::logic_error("Negative value error");
+
+  /* std::cout << "deposit amount: " << amounts.dep_amount << */
+  /*            "\nreplani amount: " << amounts.rep_amount << */
+  /*            "\nremove  amount: " << amounts.rem_amount << std::endl; */
+
+  /* std::cout << "\nRate : " << rates.dep_rate << "\nTax:  " << rates.tax_rate << std::endl; */
+
+  /* std::cout << "\nPeriod: " << p << std::endl; */
+
+}
 
 static double Period(Deposit::Frequency f) {
   const double avg_days_in_month = 30.4167;
@@ -78,12 +98,12 @@ std::string Deposit::CalculateProfit(F pay, F replanish, F withdraw, bool cap) {
   if (i == period && cap) amounts.dep_amount += percents;
   income += percents;
 
-  std::string result {"\nIncome: "};                                       
-  result += std::to_string(std::floor(income));                                 
-  result += "\nDeposit: ";                                            
-  result += std::to_string(std::floor(amounts.dep_amount));                                
-  result += "\nTax    : ";                                            
-  result += std::to_string(std::floor(income * rates.tax_rate / 100.0));
+  std::string result {"\n INCOME ---> "};                                       
+  result += std::to_string(RoundUp(income, 2));                                 
+  result += "\nDEPOSIT --> ";                                            
+  result += std::to_string(RoundUp(amounts.dep_amount, 2));                                
+  result += "\n        TAX ---> ";                                            
+  result += std::to_string(RoundUp(income * rates.tax_rate / 100.0, 2));
 
   std::cout << result << std::endl;
 

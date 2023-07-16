@@ -1,6 +1,6 @@
-#include "smartcalc.h"
-#include "creditcalc.h"
-#include "depositcalc.h"
+#include "includes/smartcalc.h"
+#include "includes/creditcalc.h"
+#include "includes/depositcalc.h"
 
 #include <QTabWidget>
 #include <QApplication>
@@ -19,11 +19,11 @@ int main(int argc, char **argv) {
   tabs.addTab(&credit, QString("credit"));
   tabs.addTab(&deposit, QString("deposit"));
 
-/* #if defined(__APPLE__) && defined(__MACH__) */
-  /* tabs.setFixedSize(610, 750); */
-/* #else */
+#if defined(__APPLE__) && defined(__MACH__)
   tabs.setFixedSize(610, 750);
-/* #endif */
+#else
+  tabs.setFixedSize(610, 750);
+#endif
   tabs.show();
   return a.exec();
 }

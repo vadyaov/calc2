@@ -3,8 +3,8 @@
 
 #include <QWidget>
 
-#include "qcustomplot.h"
-#include "../controller.h"
+#include "../qcustomplot/qcustomplot.h"
+#include "../../controller/controller.h"
 
 QT_BEGIN_NAMESPACE
 class QLineEdit;
