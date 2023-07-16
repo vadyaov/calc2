@@ -317,11 +317,15 @@ void SmartCalc::InitGraph(QCustomPlot *plot) {
 }
 
 SmartCalc::~SmartCalc() {
-  delete main_display, xmin_display, xmax_display, step_display,
-              ymin_display, ymax_display;
-  delete x_display;
   for (int i = 0; i < NumDigitButtons; ++i)
     delete DigitButtons[i];
+  delete main_display;
+  delete xmin_display;
+  delete xmax_display;
+  delete step_display;
+  delete ymin_display;
+  delete ymax_display;
+  delete x_display;
 
   delete myplot;
 

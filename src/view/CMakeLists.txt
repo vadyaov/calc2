@@ -15,6 +15,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
 find_package(Qt6 CONFIG REQUIRED COMPONENTS Widgets PrintSupport)
 
+add_compile_options(-Wall -Werror -Wextra -Wpedantic)
+add_compile_options(-fsanitize=address)
+add_link_options(-fsanitize=address)
+
 set(PROJECT_INCLUDES
   includes/smartcalc.h
   includes/creditcalc.h
