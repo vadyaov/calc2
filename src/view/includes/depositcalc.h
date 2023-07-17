@@ -17,6 +17,7 @@ class QComboBox;
 class QHBoxLayout;
 QT_END_NAMESPACE
 
+namespace s21 {
 class DepositCalc : public QWidget {
     Q_OBJECT
 
@@ -53,5 +54,6 @@ class DepositCalc : public QWidget {
     QHBoxLayout *date_layout;
 
 };
+}  // namespace s21
 
 #endif //  DEPOSITCALC_H

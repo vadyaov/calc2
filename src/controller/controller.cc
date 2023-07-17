@@ -1,5 +1,7 @@
 #include "controller.h"
 
+using namespace s21;
+
 Controller::Controller(const std::string& exp) : m{new Model(exp)}, c{nullptr}, d{nullptr} {
 }
 

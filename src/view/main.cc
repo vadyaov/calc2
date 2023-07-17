@@ -11,9 +11,9 @@ int main(int argc, char **argv) {
   QTabWidget tabs;
   tabs.setWindowTitle("SmartCalc_v2.0");
 
-  SmartCalc calc;
-  CreditCalc credit;
-  DepositCalc deposit;
+  s21::SmartCalc calc;
+  s21::CreditCalc credit;
+  s21::DepositCalc deposit;
 
   tabs.addTab(&calc, QString("calc"));
   tabs.addTab(&credit, QString("credit"));

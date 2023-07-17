@@ -2,6 +2,8 @@
 #include "../includes/calcul.h"
 #include <cmath>
 
+using namespace s21;
+
 TEST(test, t1) {
   Model m("-2 * sin(30)/cos(30) -(-1) + sqrt(16/4)/tan( 1/2)");
   double result = 0.0, expected = 0.0;

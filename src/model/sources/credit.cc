@@ -3,21 +3,22 @@
 #include <cmath>
 #include <stdexcept>
 
-Credit::Credit(double am, double rat, double year, double month) : amount{am},
-                                          rate{rat}, period{year * 12 + month} {
-
-  if (std::signbit(amount) || std::signbit(rate) || std::signbit(year) || std::signbit(month))
-    throw std::logic_error("Negative value error");
-  if (period == 0)
-    throw std::logic_error("Term input error");
-}
-
 double RoundUp(double value, int decimal_places) {
     const double multiplier = std::pow(10.0, decimal_places);
     return std::ceil(value * multiplier) / multiplier;
 }
 
-std::string Credit::GetCreditInfo(type t) const {
+s21::Credit::Credit(double am, double rat, double year, double month) : amount{am},
+                                          rate{rat}, period{year * 12 + month} {
+
+  if (std::signbit(amount) || std::signbit(rate) ||
+      std::signbit(year) || std::signbit(month))
+    throw std::logic_error("Negative value error");
+  if (period == 0)
+    throw std::logic_error("Term input error");
+}
+
+std::string s21::Credit::GetCreditInfo(type t) const {
   std::string data = "MONTH PAYMENT --> ";
 
   double month_payment, over_payment{0}, total_payment{0};

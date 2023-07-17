@@ -4,25 +4,29 @@
 #include <cmath>
 #include <stdexcept>
 
+#include <iostream>
+
 #include "../includes/calcul.h"
 
-static bool IsDigit(char ch) {
+namespace {
+
+bool IsDigit(char ch) {
   return std::isdigit(static_cast<unsigned char>(ch));
 }
 
-static bool IsAlpha(char ch) {
+bool IsAlpha(char ch) {
   return std::isalpha(static_cast<unsigned char>(ch));
 }
 
-static bool IsFunction(char ch) {
+bool IsFunction(char ch) {
   return std::string("sctSCTqlg").find(ch) == std::string::npos ? false : true;
 }
 
-static bool IsOperator(char ch) {
+bool IsOperator(char ch) {
   return std::string("|~m+-/*^").find(ch) == std::string::npos ? false : true;
 }
 
-static int SetPriority(char c) {
+int SetPriority(char c) {
   int p = 0;
 
   if (c == '*' || c == '/') p = 1;
@@ -32,15 +36,15 @@ static int SetPriority(char c) {
   return p;
 }
 
-static void AppendToOutput(char c, std::string& out) {
+void AppendToOutput(char c, std::string& out) {
   out.push_back(c);
 }
 
-static void AppendSpaceToOutput(std::string& out) {
+void AppendSpaceToOutput(std::string& out) {
   out.push_back(' ');
 }
 
-static void AppendNumber(std::string::const_iterator& it, std::string& out) {
+void AppendNumber(std::string::const_iterator& it, std::string& out) {
   while (IsDigit(*it)) out.push_back(*it++);
 
   if (*it == '.') {
@@ -53,7 +57,7 @@ static void AppendNumber(std::string::const_iterator& it, std::string& out) {
   AppendSpaceToOutput(out);
 }
 
-static void ProcessClosingBracket(std::string& out, std::stack<char>& sstack) {
+void ProcessClosingBracket(std::string& out, std::stack<char>& sstack) {
   if (sstack.empty()) throw std::logic_error("Invalid expression");
 
   while (sstack.top() != '(') {
@@ -67,7 +71,7 @@ static void ProcessClosingBracket(std::string& out, std::stack<char>& sstack) {
   sstack.pop();
 }
 
-static void ProcessOperator(char c, std::string& out, std::stack<char>& sstack) {
+void ProcessOperator(char c, std::string& out, std::stack<char>& sstack) {
   int priority = SetPriority(c);
   if (!sstack.empty()) {
     char b = sstack.top();
@@ -83,7 +87,7 @@ static void ProcessOperator(char c, std::string& out, std::stack<char>& sstack) 
   sstack.push(c);
 }
 
-static void ProcessRemainingOperators(std::string& out, std::stack<char>& sstack) {
+void ProcessRemainingOperators(std::string& out, std::stack<char>& sstack) {
   while (!sstack.empty()) {
     char b = sstack.top();
     if (IsOperator(b) || IsFunction(b)) {
@@ -96,7 +100,7 @@ static void ProcessRemainingOperators(std::string& out, std::stack<char>& sstack
   }
 }
 
-static std::string MakePolish(const std::string& src) {
+std::string MakePolish(const std::string& src) {
   std::string out;
   std::stack<char> sstack;
 
@@ -123,7 +127,7 @@ static std::string MakePolish(const std::string& src) {
   return out;
 }
 
-static void FindUnary(std::string& src) {
+void FindUnary(std::string& src) {
   for (std::size_t i = 0; i < src.size(); ++i)
     if (src[i] == '+' || src[i] == '-')
       if (i == 0 || src[i - 1] == '(' || IsOperator(src[i - 1]) || src[i - 1] == 'm') {
@@ -142,7 +146,19 @@ void IsInvalidDot(const char *point) {
   }
 }
 
-static std::string ReplaceFunctionsWithSymbols(const std::string& src) {
+void FindExpo(std::string& result) {
+  for (std::size_t i = 0; i < result.size(); ++i) {
+    if (result[i] == 'e') {
+      if (i > 0 && i < result.size() - 1 && IsDigit(result[i - 1]) &&
+          (result[i + 1] == '+' || result[i + 1] == '-' ||
+           IsDigit(result[i + 1])) ) {
+        result.replace(i, 1, std::string("*10^"));
+      }
+    }
+  }
+}
+
+std::string ReplaceFunctionsWithSymbols(const std::string& src) {
   std::string result;
   std::vector<std::string> functions {"mod", "sin", "cos", "tan", "asin",
                                       "acos", "atan", "sqrt", "ln", "log"};
@@ -160,13 +176,15 @@ static std::string ReplaceFunctionsWithSymbols(const std::string& src) {
     result += src[i];
   }
 
+  FindExpo(result);
   FindUnary(result);
 
   return result;
 }
 
 
-double StringToDouble(std::string::const_iterator& it, std::string::const_iterator cend) {
+double StringToDouble(std::string::const_iterator& it,
+                             std::string::const_iterator cend) {
   double doubleNum {0.0}, integerPart {0.0}, fractionalPart {0.0};
   std::string::const_iterator buf {it}, end, unknown;
   int j = 0;
@@ -244,14 +262,13 @@ void FunctionAction(std::stack<double>& nstack, char s) {
 
   nstack.push(res);
 }
+}  // namespace
 
-Model::Model(const std::string& src) : expression{src} {
-  if (src.empty()) throw std::length_error("Empty expression");
-
+s21::Model::Model(const std::string& src) : expression{src} {
   expression = MakePolish(ReplaceFunctionsWithSymbols(expression));
 }
 
-double Model::CalculateExpression(const double x) const {
+double s21::Model::CalculateExpression(const double x) const {
 
   std::stack<double> nstack;
 

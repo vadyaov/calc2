@@ -3,6 +3,7 @@
 
 #include <string>
 
+namespace s21 {
 struct Amount {
   double dep_amount;
   double rep_amount;
@@ -29,7 +30,7 @@ class Deposit {
   Rate rates;
   std::size_t period; // in days
 
-  public:                  // 0    1     2     3        4       5        6     7        8
+  public:
     using F = enum Frequency {NO, DAY, WEEK, MONTH1, MONTH2, QUARTER, MONTH4, MONTH6, YEAR};
 
     Deposit() = delete;
@@ -41,8 +42,9 @@ class Deposit {
     std::size_t days() {return period;}
 
 };
+}  // namespace s21
 
 std::size_t Days(const std::pair<std::string, std::string>&);
-Deposit::F FindCorrectIdx(int);
+s21::Deposit::F FindCorrectIdx(int);
 
 #endif // DEPOSIT_H 

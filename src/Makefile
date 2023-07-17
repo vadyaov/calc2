@@ -14,14 +14,14 @@ all: tests install run
 
 install:
 	@$(MK) $(BUILD_DIR)
-	cmake $(CURR_DIR) -S $(VIEW_DIR) -B $(BUILD_DIR)
-	@cd $(BUILD_DIR) ; make ; cd ./..
+	@cmake $(CURR_DIR) -S $(VIEW_DIR) -B $(BUILD_DIR)
+	@cd $(BUILD_DIR) ; $(MAKE) ; cd ..
 
 uninstall:
 	@$(RM) -r $(BUILD_DIR)
 
 run:
-	$(BUILD_DIR)/smartcalc
+	@$(BUILD_DIR)/smartcalc
 
 # dist: create_dirs cpy_files
 # 	tar cvzf $(ARCHIVE).tgz $(ARCHIVE)
@@ -54,11 +54,11 @@ run:
 # 	cp $(CURR_DIR)/gui/pic/* $(ARCHIVE)/src/gui/pic
 
 tests:
-	@cd $(LOGIC_DIR) ; make test ; cd ./..
+	@cd $(MODEL_DIR) ; $(MAKE) test ; cd ./..
 
 # gcov_report:
 # 	@cd $(LOGIC_DIR) ; make gcov_report ; cd ./..
 
 clean: uninstall
-	@cd $(MODEL_DIR) ; make clean ; cd ./..
+	@cd $(MODEL_DIR) ; $(MAKE) clean ; cd ./..
 	# @$(RM) -r manual/

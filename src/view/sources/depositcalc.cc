@@ -10,6 +10,7 @@
 #include <QComboBox>
 #include <QHBoxLayout>
 
+using namespace s21;
 
 DepositCalc::DepositCalc(QWidget* parent) : QWidget(parent) {
   CreateWidgets();

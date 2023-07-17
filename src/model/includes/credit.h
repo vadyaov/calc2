@@ -3,6 +3,7 @@
 
 #include <string>
 
+namespace s21 {
 class Credit {
   double amount;
   double rate;
@@ -17,5 +18,6 @@ class Credit {
 
     std::string GetCreditInfo(type t) const;
 };
+}  // namespace s21
 
 #endif //  CREDIT_H

@@ -3,6 +3,7 @@
 
 #include <string>
 
+namespace s21 {
 class Model {
   private:
     std::string expression;
@@ -12,5 +13,6 @@ class Model {
     ~Model() = default;
     double CalculateExpression(const double) const;
 };
+}  // namespace s21
 
 #endif  // _MODEL_

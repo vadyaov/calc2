@@ -14,6 +14,7 @@ class QPushButton;
 class QComboBox;
 QT_END_NAMESPACE
 
+namespace s21 {
 class CreditCalc : public QWidget {
     Q_OBJECT
 
@@ -42,5 +43,6 @@ class CreditCalc : public QWidget {
 
     QComboBox *compound_box;
 };
+}  // namespace s21
 
 #endif //  CREDITCALC_H

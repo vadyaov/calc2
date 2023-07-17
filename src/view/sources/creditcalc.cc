@@ -7,6 +7,8 @@
 #include <QPushButton>
 #include <QComboBox>
 
+using namespace s21;
+
 CreditCalc::CreditCalc(QWidget* parent) : QWidget(parent) {
   CreateWidgets();
   AddWidgets();

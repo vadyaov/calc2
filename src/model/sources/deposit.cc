@@ -31,25 +31,7 @@ struct Date {
   }
 };
 
-Deposit::Deposit(const Amount& a, const Rate& r, std::size_t p) : amounts{a},
-                                                          rates{r},
-                                                          period{p} {
-  if (std::signbit(amounts.dep_amount) || std::signbit(amounts.rep_amount) ||
-      std::signbit(amounts.rem_amount) || std::signbit(rates.dep_rate) ||
-      std::signbit(rates.tax_rate))
-    throw std::logic_error("Negative value error");
-
-  /* std::cout << "deposit amount: " << amounts.dep_amount << */
-  /*            "\nreplani amount: " << amounts.rep_amount << */
-  /*            "\nremove  amount: " << amounts.rem_amount << std::endl; */
-
-  /* std::cout << "\nRate : " << rates.dep_rate << "\nTax:  " << rates.tax_rate << std::endl; */
-
-  /* std::cout << "\nPeriod: " << p << std::endl; */
-
-}
-
-static double Period(Deposit::Frequency f) {
+static double Period(s21::Deposit::Frequency f) {
   const double avg_days_in_month = 30.4167;
   const double r[] = {0.0,
                       1.0,
@@ -63,7 +45,16 @@ static double Period(Deposit::Frequency f) {
   return r[f];
 }
 
-std::string Deposit::CalculateProfit(F pay, F replanish, F withdraw, bool cap) {
+s21::Deposit::Deposit(const Amount& a, const Rate& r, std::size_t p) : amounts{a},
+                                                          rates{r},
+                                                          period{p} {
+  if (std::signbit(amounts.dep_amount) || std::signbit(amounts.rep_amount) ||
+      std::signbit(amounts.rem_amount) || std::signbit(rates.dep_rate) ||
+      std::signbit(rates.tax_rate))
+    throw std::logic_error("Negative value error");
+}
+
+std::string s21::Deposit::CalculateProfit(F pay, F replanish, F withdraw, bool cap) {
   std::size_t i = 0, ii = 1, jj = 1, kk = 1;
   double percents {0};
 
@@ -110,15 +101,13 @@ std::string Deposit::CalculateProfit(F pay, F replanish, F withdraw, bool cap) {
   return result;
 }
 
+s21::Deposit::F FindCorrectIdx(int i) {
+  if (i < 3) return s21::Deposit::F(i + 1);
+  if (i == 3) return s21::Deposit::F(i + 2);
+  return s21::Deposit::F(i + 3);
+}
 
 std::size_t Days(const std::pair<std::string, std::string>& dates) {
   Date start(dates.first), end(dates.second);
   return end.Yulian() - start.Yulian();
-}
-
-Deposit::F FindCorrectIdx(int i) {
-  if (i < 3) return Deposit::F(i + 1);
-  if (i == 3) return Deposit::F(i + 2);
-  
-  return Deposit::F(i + 3);
 }

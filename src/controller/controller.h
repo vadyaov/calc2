@@ -5,6 +5,7 @@
 #include "../model/includes/credit.h"
 #include "../model/includes/deposit.h"
 
+namespace s21 {
 class Controller {
   private:
     Model *m;
@@ -30,5 +31,6 @@ class Controller {
     std::string DepositData(bool, int, int, int);
 
 };
+}  // namespace s21
 
 #endif //  CONTROLLER_H

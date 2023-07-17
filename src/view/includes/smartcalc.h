@@ -14,6 +14,7 @@ class QLabel;
 QT_END_NAMESPACE
 class Button;
 
+namespace s21 {
 class SmartCalc : public QWidget {
     Q_OBJECT
 
@@ -47,7 +48,7 @@ class SmartCalc : public QWidget {
     Button *bcsp_btn, *ac_btn, *x_btn, *point_btn, *lbracket_btn, *rbracket_btn,
            *div_btn, *mult_btn, *minus_btn, *plus_btn, *mod_btn, *pow_btn,
            *equal_btn, *sin_btn, *cos_btn, *tan_btn, *asin_btn, *acos_btn,
-           *atan_btn, *ln_btn, *log_btn, *sqrt_btn;
+           *atan_btn, *ln_btn, *log_btn, *sqrt_btn, *exp_btn;
 
     QLineEdit *main_display, *x_display, *xmin_display, *xmax_display,
               *step_display, *ymin_display, *ymax_display;
@@ -57,5 +58,6 @@ class SmartCalc : public QWidget {
     QCustomPlot *myplot;
 
 };
+} // namespace s21
 
 #endif //  SMARTCALC_H

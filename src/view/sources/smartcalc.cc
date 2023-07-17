@@ -9,6 +9,8 @@ constexpr double EPS = 1e-7;
 constexpr double YMAX = 1e6;
 constexpr double YMIN = -1e6;
 
+using namespace s21;
+
 SmartCalc::SmartCalc(QWidget* parent) : QWidget(parent) {
   CreateWidgets();
   AddWidgets();
@@ -40,16 +42,17 @@ void SmartCalc::CreateWidgets() {
   ac_btn = CreateButton(tr("AC"), SLOT(AcClicked()));
   equal_btn = CreateButton(tr("="), SLOT(EqualClicked()));
 
-  x_btn = CreateButton(tr("X"), SLOT(OtherClicked()));
+  x_btn = CreateButton(tr("x"), SLOT(OtherClicked()));
   point_btn = CreateButton(tr("."), SLOT(OtherClicked()));
   lbracket_btn = CreateButton(tr("("), SLOT(OtherClicked()));
   rbracket_btn = CreateButton(tr(")"), SLOT(OtherClicked()));
-  div_btn = CreateButton(tr("\303\267"), SLOT(OtherClicked()));
-  mult_btn = CreateButton(tr("\303\227"), SLOT(OtherClicked()));
+  div_btn = CreateButton(tr("/"), SLOT(OtherClicked()));
+  mult_btn = CreateButton(tr("*"), SLOT(OtherClicked()));
   minus_btn = CreateButton(tr("-"), SLOT(OtherClicked()));
   plus_btn = CreateButton(tr("+"), SLOT(OtherClicked()));
   mod_btn = CreateButton(tr("mod"), SLOT(OtherClicked()));
   pow_btn = CreateButton(tr("^"), SLOT(OtherClicked()));
+  exp_btn = CreateButton(tr("e"), SLOT(OtherClicked()));
 
   sin_btn = CreateButton(tr("sin"), SLOT(FunctionClicked()));
   cos_btn = CreateButton(tr("cos"), SLOT(FunctionClicked()));
@@ -100,6 +103,7 @@ void SmartCalc::AddWidgets() {
   main_layout->addWidget(main_display, 0, 0, 1, 6);
   main_layout->addWidget(x_display, 1, 1);
   main_layout->addWidget(graph_btn, 5, 0);
+  main_layout->addWidget(exp_btn, 5, 2);
   #if defined __APPLE__ && defined __MACH__
   main_layout->addWidget(myplot, 6, 0, 30, 7);
   #else
@@ -191,6 +195,7 @@ void SmartCalc::TuneWidgets() {
   log_btn->setFont(f);
   sqrt_btn->setFont(f);
   graph_btn->setFont(f);
+  exp_btn->setFont(f);
 }
 
 void SmartCalc::DigitClicked() {
@@ -226,6 +231,8 @@ void SmartCalc::AcClicked() {
 }
 
 void SmartCalc::EqualClicked() {
+  if (main_display->text().isEmpty()) return;
+
   double x = x_display->text().toDouble();
   try{
 
@@ -235,8 +242,8 @@ void SmartCalc::EqualClicked() {
     else
       main_display->setText(QString::number(c.Calculate(x)));
 
-  } catch (...) {
-    main_display->setText(QString("Incorrect expression"));
+  } catch (const std::exception& e) {
+    main_display->setText(QString(QString::fromStdString(e.what())));
   }
 }
 
@@ -353,6 +360,7 @@ SmartCalc::~SmartCalc() {
   delete ln_btn;
   delete log_btn;
   delete sqrt_btn;
+  delete exp_btn;
 
   delete main_layout;
 }
