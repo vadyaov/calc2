@@ -5,6 +5,7 @@
 #include <iostream>
 
 extern double RoundUp(double, int);
+extern void RemoveTrailingZeros(std::string&);
 
 struct Date {
   int day;
@@ -58,16 +59,19 @@ std::string s21::Deposit::CalculateProfit(F pay, F replanish, F withdraw, bool c
   std::size_t i = 0, ii = 1, jj = 1, kk = 1;
   double percents {0};
 
-  double day_percent = rates.dep_rate / 365.0 / 100.0;
+  double day_percent = rates.dep_rate / static_cast<double>(365) / 100.0;
   double cap_period = Period(pay), add_period = Period(replanish),
          rem_period = Period(withdraw);
 
+  std::cout << "day_percent = " << day_percent << std::endl;
+  std::cout << "period = " << period << std::endl;
+  std::cout << "add_period = " << add_period << std::endl;
+  std::cout << "rem_period = " << rem_period << std::endl;
+
   double income{0};
 
-  std::cout << cap_period << ' ' << add_period << ' ' << rem_period << std::endl;
-
-  while (i < period) {
-    percents += amounts.dep_amount * day_percent;
+  while (i < period - 1) {
+      percents += amounts.dep_amount * day_percent;
     if (cap && i == static_cast<std::size_t>(cap_period * ii)) {
       amounts.dep_amount += percents;
       income += percents;
@@ -75,29 +79,33 @@ std::string s21::Deposit::CalculateProfit(F pay, F replanish, F withdraw, bool c
       ++ii;
     }
     if (replanish != F::NO && i == static_cast<std::size_t>(add_period * jj)) {
-      if (jj++ < static_cast<std::size_t>(period / add_period))
         amounts.dep_amount += amounts.rep_amount;
+        ++jj;
     }
     if (withdraw != F::NO && i == static_cast<std::size_t>(rem_period * kk)) {
-      if (kk++ < static_cast<std::size_t>(period / rem_period))
         amounts.dep_amount -= amounts.rem_amount;
+        ++kk;
     }
     ++i;
     if (amounts.dep_amount <= 0) break;
   }
 
+    std::cout << "ii = " << ii << "   jj = " << jj  << "   kk = " << kk << std::endl;
+
   if (i == period && cap) amounts.dep_amount += percents;
   income += percents;
 
-  std::string result {"\n INCOME ---> "};                                       
-  result += std::to_string(RoundUp(income, 2));                                 
-  result += "\nDEPOSIT --> ";                                            
-  result += std::to_string(RoundUp(amounts.dep_amount, 2));                                
-  result += "\n        TAX ---> ";                                            
-  result += std::to_string(RoundUp(income * rates.tax_rate / 100.0, 2));
+  std::string income_string = std::to_string(RoundUp(income, 2));
+  std::string deposit_string = std::to_string(RoundUp(amounts.dep_amount, 2));
+  std::string tax_string = std::to_string(RoundUp(income * rates.tax_rate / 100.0, 2));
 
-  std::cout << result << std::endl;
+  RemoveTrailingZeros(income_string);
+  RemoveTrailingZeros(deposit_string);
+  RemoveTrailingZeros(tax_string);
 
+  std::string result = " INCOME ---> " + income_string +
+                       "\nDEPOSIT --> " + deposit_string +
+                       "\n        TAX ---> " + tax_string;
   return result;
 }
 

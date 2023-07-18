@@ -21,7 +21,7 @@ find_package(GTest REQUIRED)
 include(GoogleTest)
 enable_testing()
 
-file(GLOB SOURCES ./tests/*.cc ./sources/calcul.cc)
+file(GLOB SOURCES ./tests/*.cc ./sources/calcul.cc ./sources/credit.cc ./sources/deposit.cc)
 add_executable(tests ${SOURCES})
 
 target_link_libraries(tests GTest::gtest_main)

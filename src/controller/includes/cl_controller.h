@@ -14,7 +14,6 @@ class ClController {
 
     explicit ClController(const std::string&);
 
-
     ~ClController();
 
     double Calculate(const double) const;

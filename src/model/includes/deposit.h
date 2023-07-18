@@ -34,12 +34,10 @@ class Deposit {
     using F = enum Frequency {NO, DAY, WEEK, MONTH1, MONTH2, QUARTER, MONTH4, MONTH6, YEAR};
 
     Deposit() = delete;
-    Deposit(const Amount& a, const Rate& r, std::size_t p);
+    Deposit(const Amount&, const Rate&, std::size_t);
     ~Deposit() = default;
 
-    std::string CalculateProfit(F pay, F replanish, F withdraw, bool cap);
-
-    std::size_t days() {return period;}
+    std::string CalculateProfit(F, F, F, bool);
 
 };
 }  // namespace s21
