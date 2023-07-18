@@ -3,7 +3,7 @@
 
 #include <QWidget>
 
-#include "../../controller/controller.h"
+#include "../../controller/includes/dp_controller.h"
 
 QT_BEGIN_NAMESPACE
 class QLineEdit;

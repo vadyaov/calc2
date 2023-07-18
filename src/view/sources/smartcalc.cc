@@ -236,7 +236,7 @@ void SmartCalc::EqualClicked() {
   double x = x_display->text().toDouble();
   try{
 
-    Controller c(main_display->text().toStdString());
+    ClController c(main_display->text().toStdString());
     if (graph_btn->isChecked())
       PrintPlot(c);
     else
@@ -247,7 +247,7 @@ void SmartCalc::EqualClicked() {
   }
 }
 
-void SmartCalc::PrintPlot(const Controller& c) {
+void SmartCalc::PrintPlot(const ClController& c) {
   QString x1 = xmin_display->text(), x2 = xmax_display->text(),
           y1 = ymin_display->text(), y2 = ymax_display->text();
   if (x1.isEmpty() || x2.isEmpty() || y1.isEmpty() || y2.isEmpty()) {

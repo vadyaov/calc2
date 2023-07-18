@@ -4,7 +4,7 @@
 #include <QWidget>
 
 #include "../qcustomplot/qcustomplot.h"
-#include "../../controller/controller.h"
+#include "../../controller/includes/cl_controller.h"
 
 QT_BEGIN_NAMESPACE
 class QLineEdit;
@@ -39,7 +39,7 @@ class SmartCalc : public QWidget {
     void AddWidgets();
     void TuneWidgets();
     void InitGraph(QCustomPlot *plot);
-    void PrintPlot(const Controller&);
+    void PrintPlot(const ClController&);
 
     QGridLayout *main_layout;
 

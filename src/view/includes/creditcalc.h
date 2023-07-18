@@ -3,8 +3,6 @@
 
 #include <QWidget>
 
-#include "../../controller/controller.h"
-
 QT_BEGIN_NAMESPACE
 class QLineEdit;
 class QGridLayout;

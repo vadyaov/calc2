@@ -1,4 +1,5 @@
 #include "../includes/creditcalc.h"
+#include "../../controller/includes/cr_controller.h"
 
 #include <QLineEdit>
 #include <QGridLayout>
@@ -84,7 +85,7 @@ void CreditCalc::CalcClicked() {
   double rate = rate_line->text().toDouble();
 
   try {
-    Controller c(amount, year, month, rate);
+    CrController c(amount, year, month, rate);
     Credit::type t =  compound_box->currentText() == QString("annually")
       ? Credit::Annually : Credit::Monthly;
     QString out = QString::fromStdString(c.CreditData(t));

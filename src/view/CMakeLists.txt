@@ -30,7 +30,9 @@ set(PROJECT_SOURCES
         ../model/sources/deposit.cc
         ../model/sources/credit.cc
         ../model/sources/calcul.cc
-        ../controller/controller.cc
+        ../controller/sources/cl_controller.cc
+        ../controller/sources/cr_controller.cc
+        ../controller/sources/dp_controller.cc
 
         main.cc
         sources/smartcalc.cc

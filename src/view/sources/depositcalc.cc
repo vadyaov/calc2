@@ -1,4 +1,5 @@
 #include "../includes/depositcalc.h"
+#include "../../controller/includes/dp_controller.h"
 
 #include <QLineEdit>
 #include <QGridLayout>
@@ -117,7 +118,7 @@ void DepositCalc::CalcClicked() {
   double tax = tax_line->text().toDouble();
 
   try {
-    Controller c({depo, repl, remo}, {rate, tax}, Controller::pair{f_day, l_day});
+    DpController c({depo, repl, remo}, {rate, tax}, DpController::pair{f_day, l_day});
     std::string data = c.DepositData(cap_index, pay_index, repl_index, remove_index);
     main_text->setPlainText(QString::fromStdString(data));
   } catch (std::exception& e) {
