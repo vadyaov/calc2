@@ -24,7 +24,7 @@ if(CMAKE_COMPILER_IS_GNUCXX)
   setup_target_for_coverage_lcov(
          NAME calc_coverage
          EXECUTABLE ./build/tests
-         BASE_DIRECTORY "./")
+         BASE_DIRECTORY "..")
 endif()
 
 find_package(GTest REQUIRED)
