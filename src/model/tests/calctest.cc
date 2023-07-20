@@ -117,6 +117,22 @@ TEST(calc_test, t12) {
   ASSERT_EQ(result, expected);
 }
 
+TEST(calc_test, t13) {
+  Model m("2.15*sin(30)/1e2");
+  double result = 0.0, expected = 0.0;
+  result = m.CalculateExpression(55.5);
+  expected = 2.15 * sin(30) / 1e2;
+  ASSERT_EQ(result, expected);
+}
+
+TEST(calc_test, t14) {
+  Model m("2.15*sin(30)/1e-2");
+  double result = 0.0, expected = 0.0;
+  result = m.CalculateExpression(55.5);
+  expected = 2.15 * sin(30) / 1e-2;
+  ASSERT_EQ(result, expected);
+}
+
 TEST(calc_test, e1) {
   EXPECT_THROW( {
     try {

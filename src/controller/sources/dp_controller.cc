@@ -17,3 +17,9 @@ std::string s21::DpController::DepositData(bool capitalization, int pay_idx,
 }
 
 s21::DpController::~DpController() {delete d;}
+
+s21::Deposit::F FindCorrectIdx(int i) {                                         
+  if (i < 3) return s21::Deposit::F(i + 1);                                     
+  if (i == 3) return s21::Deposit::F(i + 2);                                    
+  return s21::Deposit::F(i + 3);                                                
+}

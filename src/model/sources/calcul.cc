@@ -146,16 +146,56 @@ void IsInvalidDot(const char *point) {
   }
 }
 
+void AddBracketsAroundExp(std::string& str) {
+  // checking for incorrect exp
+  for (auto it = str.begin(); it != str.end(); ++it) {
+
+    // it --> e
+    if (*it == 'e' && it != str.begin() && it != str.end() - 1) {
+      std::cout << "HERE1\n";
+      if (IsDigit(*(it - 1)) && (IsDigit(*(it + 1)) || *(it + 1) == '+' || *(it + 1) == '-')) {
+        std::cout << "HERE2\n";
+        int i = 2;
+        --it;
+        while ((IsDigit(*it) || *it == '.') && it != str.begin() - 1) {
+          std::cout << *it << ' ';
+          ++i;
+          --it;
+        }
+        std::cout << "HERE3\n";
+        str.insert(it + 1, '(');
+        std::cout << "HERE4\n";
+        it += i + 1;
+        std::cout << "i = " << i << std::endl;
+        std::cout << "\n*it = " << *it << std::endl;
+        int count = 0;
+        while (it != str.end() && (IsDigit(*it) || *it == '.' || *it == '+' || *it == '-')) {
+          if (*it == '+' || *it == '-') ++count;
+          if (count > 1) break;
+          ++it;
+        }
+        str.insert(it, ')');
+      }
+    }
+
+  }
+}
+
 void FindExpo(std::string& result) {
+  std::cout << result << std::endl;
+
+  AddBracketsAroundExp(result);
+
   for (std::size_t i = 0; i < result.size(); ++i) {
     if (result[i] == 'e') {
       if (i > 0 && i < result.size() - 1 && IsDigit(result[i - 1]) &&
-          (result[i + 1] == '+' || result[i + 1] == '-' ||
-           IsDigit(result[i + 1])) ) {
+          (result[i + 1] == '+' || result[i + 1] == '-' || IsDigit(result[i + 1])) ) {
         result.replace(i, 1, std::string("*10^"));
       }
     }
   }
+
+  std::cout << result << std::endl;
 }
 
 std::string ReplaceFunctionsWithSymbols(const std::string& src) {

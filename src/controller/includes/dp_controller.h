@@ -21,5 +21,7 @@ class DpController {
 };
 }  // namespace s21
 
+s21::Deposit::F FindCorrectIdx(int);
+
 #endif  // DP_CONTROLLER_H
 

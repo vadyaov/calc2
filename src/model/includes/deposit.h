@@ -43,6 +43,5 @@ class Deposit {
 }  // namespace s21
 
 std::size_t Days(const std::pair<std::string, std::string>&);
-s21::Deposit::F FindCorrectIdx(int);
 
 #endif // DEPOSIT_H 

@@ -63,11 +63,6 @@ std::string s21::Deposit::CalculateProfit(F pay, F replanish, F withdraw, bool c
   double cap_period = Period(pay), add_period = Period(replanish),
          rem_period = Period(withdraw);
 
-  std::cout << "day_percent = " << day_percent << std::endl;
-  std::cout << "period = " << period << std::endl;
-  std::cout << "add_period = " << add_period << std::endl;
-  std::cout << "rem_period = " << rem_period << std::endl;
-
   double income{0};
 
   while (i < period - 1) {
@@ -90,8 +85,6 @@ std::string s21::Deposit::CalculateProfit(F pay, F replanish, F withdraw, bool c
     if (amounts.dep_amount <= 0) break;
   }
 
-    std::cout << "ii = " << ii << "   jj = " << jj  << "   kk = " << kk << std::endl;
-
   if (i == period && cap) amounts.dep_amount += percents;
   income += percents;
 
@@ -107,12 +100,6 @@ std::string s21::Deposit::CalculateProfit(F pay, F replanish, F withdraw, bool c
                        "\nDEPOSIT --> " + deposit_string +
                        "\n        TAX ---> " + tax_string;
   return result;
-}
-
-s21::Deposit::F FindCorrectIdx(int i) {
-  if (i < 3) return s21::Deposit::F(i + 1);
-  if (i == 3) return s21::Deposit::F(i + 2);
-  return s21::Deposit::F(i + 3);
 }
 
 std::size_t Days(const std::pair<std::string, std::string>& dates) {

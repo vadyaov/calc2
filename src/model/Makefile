@@ -1,4 +1,5 @@
 BUILD_DIR = build
+COVER_DIR = cover
 
 all: test
 
@@ -9,11 +10,11 @@ test:
 	./build/tests
 
 gcov:
-	mkdir -p $(BUILD_DIR)
-	cmake -B $(BUILD_DIR) -DCMAKE_BUILD_TYPE=Debug .
-	$(MAKE) -C $(BUILD_DIR) tests
-	./build/tests
-	$(MAKE) calc_coverage
+	mkdir -p $(COVER_DIR)
+	cmake ./ -B $(COVER_DIR) -DCMAKE_BUILD_TYPE=Debug
+	# $(MAKE) -C $(COVER_DIR)
+	$(MAKE) -C ./$(COVER_DIR) calc_coverage
+	open ./cover/calc_coverage/index.html
 
 clang:
 	clang-format -n test/*.cc containers/* containers_plus/*
@@ -23,5 +24,6 @@ valgrind:
 
 clean:
 	@rm -rf $(BUILD_DIR)
+	@rm -rf $(COVER_DIR)
 
 .PHONY: all test clang valgrind clean

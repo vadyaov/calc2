@@ -18,15 +18,6 @@ add_compile_options(-Wall -Werror -Wextra -Wpedantic)
 # add_compile_options(-fsanitize=address)
 # add_link_options(-fsanitize=address)
 
-if(CMAKE_COMPILER_IS_GNUCXX)
-  include(CodeCoverage)
-  append_coverage_compiler_flags()
-  setup_target_for_coverage_lcov(
-         NAME calc_coverage
-         EXECUTABLE ./build/tests
-         BASE_DIRECTORY "..")
-endif()
-
 find_package(GTest REQUIRED)
 include(GoogleTest)
 enable_testing()
@@ -37,3 +28,14 @@ add_executable(tests ${SOURCES})
 target_link_libraries(tests GTest::gtest_main)
 
 gtest_discover_tests(tests)
+
+if(CMAKE_COMPILER_IS_GNUCXX)
+  include(CodeCoverage)
+  append_coverage_compiler_flags()
+  setup_target_for_coverage_lcov(
+         NAME calc_coverage
+         EXECUTABLE tests -j ${PROCESSOR_COUNT}
+         BASE_DIRECTORY "../"
+         EXCLUDE "/usr/include/*" "./model/tests/*" "./gtest/*" "./gtest/internal/*")
+endif()
+
