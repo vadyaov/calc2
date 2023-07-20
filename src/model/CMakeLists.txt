@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_STATIC_LIBRARY_PREFIX "")
 set(CMAKE_BUILD_TYPE Release)
+set(CMAKE_MODULE_PATH ./CMakeModules)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -14,8 +15,17 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(googletest)
 
 add_compile_options(-Wall -Werror -Wextra -Wpedantic)
-add_compile_options(-fsanitize=address)
-add_link_options(-fsanitize=address)
+# add_compile_options(-fsanitize=address)
+# add_link_options(-fsanitize=address)
+
+if(CMAKE_COMPILER_IS_GNUCXX)
+  include(CodeCoverage)
+  append_coverage_compiler_flags()
+  setup_target_for_coverage_lcov(
+         NAME calc_coverage
+         EXECUTABLE ./build/tests
+         BASE_DIRECTORY "./")
+endif()
 
 find_package(GTest REQUIRED)
 include(GoogleTest)

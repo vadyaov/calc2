@@ -56,6 +56,9 @@ run:
 tests:
 	@cd $(MODEL_DIR) ; $(MAKE) test ; cd ./..
 
+gcov_report:
+	@cd $(MODEL_DIR) ; $(MAKE) gcov ; cd ./..
+
 # gcov_report:
 # 	@cd $(LOGIC_DIR) ; make gcov_report ; cd ./..
 
