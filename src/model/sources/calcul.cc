@@ -1,21 +1,17 @@
-#include <vector>
-#include <stack>
+#include "../includes/calcul.h"
+
 #include <cctype>
 #include <cmath>
 #include <regex>
+#include <stack>
 #include <stdexcept>
-
-#include "../includes/calcul.h"
+#include <vector>
 
 namespace {
 
-bool IsDigit(char ch) {
-  return std::isdigit(static_cast<unsigned char>(ch));
-}
+bool IsDigit(char ch) { return std::isdigit(static_cast<unsigned char>(ch)); }
 
-bool IsAlpha(char ch) {
-  return std::isalpha(static_cast<unsigned char>(ch));
-}
+bool IsAlpha(char ch) { return std::isalpha(static_cast<unsigned char>(ch)); }
 
 bool IsFunction(char ch) {
   return std::string("sctSCTqlg").find(ch) == std::string::npos ? false : true;
@@ -28,27 +24,25 @@ bool IsOperator(char ch) {
 int SetPriority(char c) {
   int p = 0;
 
-  if (c == '*' || c == '/') p = 1;
-  else if (c == '^' || c == 'm') p = 2;
-  else if (c == '~' || c == '|') p = 3;
+  if (c == '*' || c == '/')
+    p = 1;
+  else if (c == '^' || c == 'm')
+    p = 2;
+  else if (c == '~' || c == '|')
+    p = 3;
 
   return p;
 }
 
-void AppendToOutput(char c, std::string& out) {
-  out.push_back(c);
-}
+void AppendToOutput(char c, std::string& out) { out.push_back(c); }
 
-void AppendSpaceToOutput(std::string& out) {
-  out.push_back(' ');
-}
+void AppendSpaceToOutput(std::string& out) { out.push_back(' '); }
 
 void AppendNumber(std::string::const_iterator& it, std::string& out) {
   while (IsDigit(*it)) out.push_back(*it++);
 
   if (*it == '.') {
     AppendToOutput(*it++, out);
-    /* if (!IsDigit(*it)) throw std::logic_error("Invalid expression"); */
 
     while (IsDigit(*it)) AppendToOutput(*it++, out);
   }
@@ -74,8 +68,9 @@ void ProcessOperator(char c, std::string& out, std::stack<char>& sstack) {
   int priority = SetPriority(c);
   if (!sstack.empty()) {
     char b = sstack.top();
-    while (!sstack.empty() && (IsFunction(b) ||
-          (IsOperator(b) && SetPriority(b) >= priority && priority != 3))) {
+    while (!sstack.empty() &&
+           (IsFunction(b) ||
+            (IsOperator(b) && SetPriority(b) >= priority && priority != 3))) {
       if (priority == 2 && c == b) break;
       AppendToOutput(b, out);
       AppendSpaceToOutput(out);
@@ -129,9 +124,12 @@ std::string MakePolish(const std::string& src) {
 void FindUnary(std::string& src) {
   for (std::size_t i = 0; i < src.size(); ++i)
     if (src[i] == '+' || src[i] == '-')
-      if (i == 0 || src[i - 1] == '(' || IsOperator(src[i - 1]) || src[i - 1] == 'm') {
-        if (src[i] == '-') src[i] = '~';
-        else src[i] = '|';
+      if (i == 0 || src[i - 1] == '(' || IsOperator(src[i - 1]) ||
+          src[i - 1] == 'm') {
+        if (src[i] == '-')
+          src[i] = '~';
+        else
+          src[i] = '|';
       }
 }
 
@@ -139,7 +137,7 @@ bool Invalid(std::string::const_iterator it) {
   return !IsDigit(*(it - 1)) || !IsDigit(*(it + 1));
 }
 
-void IsInvalidDot(const char *point) {
+void IsInvalidDot(const char* point) {
   if (Invalid(std::string::const_iterator(point))) {
     throw std::logic_error("Invalid expression");
   }
@@ -153,17 +151,18 @@ std::string AddBracketsAroundExp(const std::string& src) {
 
   std::vector<std::string> matches;
   std::vector<std::pair<std::size_t, std::size_t>> lengths;
-  for (; it !=  it_end; ++it) {
+  for (; it != it_end; ++it) {
     const std::smatch& match = *it;
     std::size_t start_pos = match.position();
 
     matches.push_back(match.str());
-    lengths.push_back(std::pair<std::size_t, std::size_t>(start_pos, match.length()));
+    lengths.push_back(
+        std::pair<std::size_t, std::size_t>(start_pos, match.length()));
   }
 
-
-  for (std::size_t i = 0, offset = 0; i < matches.size();++i, offset += 2)
-    res.replace(lengths[i].first + offset, lengths[i].second, std::string("(") + matches[i] + std::string(")"));
+  for (std::size_t i = 0, offset = 0; i < matches.size(); ++i, offset += 2)
+    res.replace(lengths[i].first + offset, lengths[i].second,
+                std::string("(") + matches[i] + std::string(")"));
 
   return res;
 }
@@ -175,7 +174,8 @@ void FindExpo(std::string& result) {
   for (std::size_t i = 0; i < result.size(); ++i) {
     if (result[i] == 'e') {
       if (i > 0 && i < result.size() - 1 && IsDigit(result[i - 1]) &&
-          (result[i + 1] == '+' || result[i + 1] == '-' || IsDigit(result[i + 1])) ) {
+          (result[i + 1] == '+' || result[i + 1] == '-' ||
+           IsDigit(result[i + 1]))) {
         result.replace(i, 1, std::string("*10^"));
       }
     }
@@ -184,10 +184,10 @@ void FindExpo(std::string& result) {
 
 std::string ReplaceFunctionsWithSymbols(const std::string& src) {
   std::string result;
-  std::vector<std::string> functions {"mod", "sin", "cos", "tan", "asin",
-                                      "acos", "atan", "sqrt", "ln", "log"};
-  std::string symb {"msctSCTqlg"};
-  
+  std::vector<std::string> functions{"mod",  "sin",  "cos",  "tan", "asin",
+                                     "acos", "atan", "sqrt", "ln",  "log"};
+  std::string symb{"msctSCTqlg"};
+
   for (std::size_t i = 0; i < src.size(); ++i) {
     if (src[i] == '.') IsInvalidDot(&src[i]);
 
@@ -206,11 +206,10 @@ std::string ReplaceFunctionsWithSymbols(const std::string& src) {
   return result;
 }
 
-
 double StringToDouble(std::string::const_iterator& it,
-                             std::string::const_iterator cend) {
-  double doubleNum {0.0}, integerPart {0.0}, fractionalPart {0.0};
-  std::string::const_iterator buf {it}, end, unknown;
+                      std::string::const_iterator cend) {
+  double doubleNum{0.0}, integerPart{0.0}, fractionalPart{0.0};
+  std::string::const_iterator buf{it}, end, unknown;
   int j = 0;
   while (buf != cend && IsDigit(*buf)) ++buf;
   unknown = buf--;
@@ -235,16 +234,15 @@ void OperatorAction(std::stack<double>& nstack, char s) {
     throw std::logic_error("Invalid expression");
   }
 
-  if (s == '|') return;
+  if (s == '|')
+    return;
   else if (s == '~') {
     nstack.top() = -nstack.top();
   } else {
     double right = nstack.top();
     nstack.pop();
 
-    if (nstack.empty()) {
-      throw std::logic_error("Invalid expression");
-    }
+    if (nstack.empty()) throw std::logic_error("Invalid expression");
 
     double left = nstack.top();
     nstack.pop();
@@ -252,12 +250,24 @@ void OperatorAction(std::stack<double>& nstack, char s) {
     double res;
 
     switch (s) {
-      case 'm': res = fmod(left, right); break;
-      case '+': res = left + right; break;
-      case '-': res = left - right; break;
-      case '/': res = left / right; break;
-      case '*': res = left * right; break;
-      case '^': res = pow(left, right); break;
+      case 'm':
+        res = fmod(left, right);
+        break;
+      case '+':
+        res = left + right;
+        break;
+      case '-':
+        res = left - right;
+        break;
+      case '/':
+        res = left / right;
+        break;
+      case '*':
+        res = left * right;
+        break;
+      case '^':
+        res = pow(left, right);
+        break;
     }
 
     nstack.push(res);
@@ -273,15 +283,33 @@ void FunctionAction(std::stack<double>& nstack, char s) {
   nstack.pop();
 
   switch (s) {
-    case 's': res = sin(n); break;
-    case 'c': res = cos(n); break;
-    case 't': res = tan(n); break;
-    case 'S': res = asin(n); break;
-    case 'C': res = acos(n); break;
-    case 'T': res = atan(n); break;
-    case 'q': res = sqrt(n); break;
-    case 'l': res = log(n); break;
-    case 'g': res = log10(n); break;
+    case 's':
+      res = sin(n);
+      break;
+    case 'c':
+      res = cos(n);
+      break;
+    case 't':
+      res = tan(n);
+      break;
+    case 'S':
+      res = asin(n);
+      break;
+    case 'C':
+      res = acos(n);
+      break;
+    case 'T':
+      res = atan(n);
+      break;
+    case 'q':
+      res = sqrt(n);
+      break;
+    case 'l':
+      res = log(n);
+      break;
+    case 'g':
+      res = log10(n);
+      break;
   }
 
   nstack.push(res);
@@ -293,10 +321,10 @@ s21::Calculator::Calculator(const std::string& src) : expression{src} {
 }
 
 double s21::Calculator::CalculateExpression(const double x) const {
-
   std::stack<double> nstack;
 
-  for (std::string::const_iterator it = expression.cbegin(); it != expression.cend(); ++it) {
+  for (std::string::const_iterator it = expression.cbegin();
+       it != expression.cend(); ++it) {
     if (IsDigit(*it)) {
       nstack.push(StringToDouble(it, expression.cend()));
     } else if (*it == 'x') {
@@ -308,7 +336,7 @@ double s21::Calculator::CalculateExpression(const double x) const {
     }
   }
 
-  double result {nstack.top()};
+  double result{nstack.top()};
   nstack.pop();
 
   if (!nstack.empty()) throw std::logic_error("Invalid expression");

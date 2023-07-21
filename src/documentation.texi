@@ -1,0 +1,168 @@
+\input texinfo
+@setfilename manual
+@settitle SmartCalc_v2.0
+@documentencoding UTF-8
+
+@copying
+Copyright © 2023 by NEELYARL
+@end copying
+
+@titlepage
+@title SmartCalc Guide
+@vskip 
+@insertcopying
+@author NEELYARL
+@end titlepage
+
+@ifnottex
+@node Top
+@top SmartCalc_v2.0
+@insertcopying
+@end ifnottex
+
+@menu
+* General information:: This section provides common information on the principle of operation of calculator.
+* Arithmetic operations:: This section provides information about the list of implemented arithmetic operations
+* Math function:: This section provides information about the list of implemented mathematical functions.
+* Charts:: This section provides information about the possibility of plotting functions.
+* Credit calculator:: This section provides information about the possibility of a credit calculator.
+* Deposit calculator:: This section provides information about the possibility of a deposit calculator.
+@end menu
+
+@node General information
+@chapter General information
+
+The calculator is developed in the C++17 programming language using MVC pattern.
+Interface for this calculator was made using QT.
+The main principle of calculations is implemented on the basis of Dijkstra's algorithm, the essence of which is to convert mathematical expressions from infix notation to reverse Polish notation.
+
+@node  Arithmetic operations
+@chapter  Arithmetic operations
+
+The following arithmetic operations are implemented in the calculator:
+@enumerate
+@item
+Addition - a + b
+@item
+Subtraction - a - b
+@item
+Multiplication - a * b
+@item
+Division - a / b
+@item
+Power - a ^ b
+@item
+Remainder of the division - a mod b
+@item
+Unary plus - +a
+@item
+Unary minus - -a
+@item
+To enter complex expressions use left and right brackets - (a)
+@end enumerate
+You can specify a complex mathematical expression using the constant "x".
+Enter the expression, click "=" and get the answer.
+
+@node Math function
+@chapter Math function
+
+The following mathematical functions are implemented in the calculator:
+@enumerate
+@item
+Computes cosine - cos(x)
+@item
+Computes sine - sin(x)
+@item
+Computes tangent - tan(x)
+@item
+Computes arc cosine - acos(x)
+@item
+Computes arc sine - asin(x)
+@item
+Computes arc tangent - atan(x)
+@item
+Computes square root - sqrt(x)
+@item
+Computes natural logarithm - ln(x)
+@item
+Computes common logarithm - log(x)
+@end enumerate
+Enter the expression, click "=" and get the answer.
+
+@node Charts
+@chapter Charts
+
+The calculator implements the possibility of plotting functions.
+In order to build a graph, enter the expression, click the "plot" button and then click "=" button.
+The graph will appear.
+
+@node Credit calculator
+@chapter Credit calculator
+
+The calculator has a special mode of operation: Credit Calculator.
+
+The credit calculator window contains the following fields:
+@enumerate
+@item
+Loan Amount - the desired loan amount.
+@item
+Loan Term - set in months, supports only integer values.
+@item
+Interest Rate - the desired interest rate. Set as an integer or a floating-point number.
+@item
+Annulling button - for annulling payments.
+@item
+Monthly button - for differentiated payments.
+@end enumerate
+Output Fields: 
+@enumerate
+@item
+Monthly payment.
+@item
+Overpayment on the loan (interest).
+@item
+The total amount to be paid.
+@end enumerate
+
+Press 'Calculate' to see the result.
+
+@node Deposit calculator
+@chapter Deposit calculator
+
+The calculator has a special mode of operation: Deposit Calculator.
+
+The deposit calculator window contains the following fields:
+@enumerate 
+@item
+Deposit Amount - the initial deposit amount.
+@item
+Deposit Term - for how long you plan to invest money. Input the day when you open deposit and the day of closing deposit.
+@item
+Interest Rate - the percentage at which you invest money.
+@item
+Tax Rate - the current key rate of the Central Bank is set.
+@item
+Frequency of Payments - you can choose 'every day', 'every week', 'every month', 'every quarter', 'every 6 month', 'every year'.
+@item
+Capitalization - activate the radiobutton if interest is credited to the account.
+@item
+Depo Replanishment - you can choose the frequency of replanishments such as in Frequency of Payments.
+@item
+Replanishment Amount - how much money you want to replanish every period.
+@item
+Partial Withdrawals - you can choose the frequency of replanishments such as in Frequency of Payments.
+@item
+Remove Amount - how much money you want to remove  every period.
+@end enumerate
+
+Output fields:
+@enumerate
+@item
+Accrued interest.
+@item
+The amount of tax.
+@item
+The amount of deposit by the end of the deposit period.
+@end enumerate
+
+@bye

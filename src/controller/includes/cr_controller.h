@@ -7,12 +7,12 @@ namespace s21 {
 class CrController {
   Credit *c;
 
-  public:
-    CrController() = delete;
-    CrController(double, double, double, double);
-    ~CrController();
+ public:
+  CrController() = delete;
+  CrController(double, double, double, double);
+  ~CrController();
 
-    std::string CreditData(Credit::type);
+  std::string CreditData(Credit::type);
 };
 }  // namespace s21
 

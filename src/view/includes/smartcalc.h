@@ -3,8 +3,8 @@
 
 #include <QWidget>
 
-#include "../qcustomplot/qcustomplot.h"
 #include "../../controller/includes/cl_controller.h"
+#include "../qcustomplot/qcustomplot.h"
 
 QT_BEGIN_NAMESPACE
 class QLineEdit;
@@ -16,48 +16,47 @@ class Button;
 
 namespace s21 {
 class SmartCalc : public QWidget {
-    Q_OBJECT
+  Q_OBJECT
 
-  public:
-      SmartCalc(QWidget* parent = nullptr);
-      ~SmartCalc();
+ public:
+  SmartCalc(QWidget *parent = nullptr);
+  ~SmartCalc();
 
-  private slots:
-    void DigitClicked();
-    void FunctionClicked();
-    void OtherClicked();
+ private slots:
+  void DigitClicked();
+  void FunctionClicked();
+  void OtherClicked();
 
-    void BscpClicked();
-    void AcClicked();
-    void EqualClicked();
+  void BscpClicked();
+  void AcClicked();
+  void EqualClicked();
 
-  private:
-    Button *CreateButton(const QString &text, const char *member);
-    enum { NumDigitButtons = 10 };
+ private:
+  Button *CreateButton(const QString &text, const char *member);
+  enum { NumDigitButtons = 10 };
 
-    void CreateWidgets();
-    void AddWidgets();
-    void TuneWidgets();
-    void InitGraph(QCustomPlot *plot);
-    void PrintPlot(const ClController&);
+  void CreateWidgets();
+  void AddWidgets();
+  void TuneWidgets();
+  void InitGraph(QCustomPlot *plot);
+  void PrintPlot(const ClController &);
 
-    QGridLayout *main_layout;
+  QGridLayout *main_layout;
 
-    Button *DigitButtons[NumDigitButtons];
+  Button *DigitButtons[NumDigitButtons];
 
-    Button *bcsp_btn, *ac_btn, *x_btn, *point_btn, *lbracket_btn, *rbracket_btn,
-           *div_btn, *mult_btn, *minus_btn, *plus_btn, *mod_btn, *pow_btn,
-           *equal_btn, *sin_btn, *cos_btn, *tan_btn, *asin_btn, *acos_btn,
-           *atan_btn, *ln_btn, *log_btn, *sqrt_btn, *exp_btn;
+  Button *bcsp_btn, *ac_btn, *x_btn, *point_btn, *lbracket_btn, *rbracket_btn,
+      *div_btn, *mult_btn, *minus_btn, *plus_btn, *mod_btn, *pow_btn,
+      *equal_btn, *sin_btn, *cos_btn, *tan_btn, *asin_btn, *acos_btn, *atan_btn,
+      *ln_btn, *log_btn, *sqrt_btn, *exp_btn;
 
-    QLineEdit *main_display, *x_display, *xmin_display, *xmax_display,
-              *step_display, *ymin_display, *ymax_display;
+  QLineEdit *main_display, *x_display, *xmin_display, *xmax_display,
+      *step_display, *ymin_display, *ymax_display;
 
-    QRadioButton *graph_btn;
+  QRadioButton *graph_btn;
 
-    QCustomPlot *myplot;
-
+  QCustomPlot *myplot;
 };
-} // namespace s21
+}  // namespace s21
 
-#endif //  SMARTCALC_H
+#endif  //  SMARTCALC_H

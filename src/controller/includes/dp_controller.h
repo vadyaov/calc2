@@ -5,23 +5,22 @@
 
 namespace s21 {
 class DpController {
-  private:
-    Deposit* d;
-  public:
-    using pair = std::pair<std::string, std::string>;
+ private:
+  Deposit* d;
 
-    DpController() = delete;
+ public:
+  using pair = std::pair<std::string, std::string>;
 
-    DpController(const Amount&, const Rate&, const pair&);
+  DpController() = delete;
 
-    ~DpController();
+  DpController(const Amount&, const Rate&, const pair&);
 
-    std::string DepositData(bool, int, int, int);
+  ~DpController();
 
+  std::string DepositData(bool, int, int, int);
 };
 }  // namespace s21
 
 s21::Deposit::F FindCorrectIdx(int);
 
 #endif  // DP_CONTROLLER_H
-

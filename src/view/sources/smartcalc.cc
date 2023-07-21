@@ -1,9 +1,10 @@
 #include "../includes/smartcalc.h"
-#include "../includes/button.h"
 
 #include <iostream>
-#include <set>
 #include <limits>
+#include <set>
+
+#include "../includes/button.h"
 
 constexpr double EPS = 1e-7;
 constexpr double YMAX = 1e6;
@@ -11,7 +12,7 @@ constexpr double YMIN = -1e6;
 
 using namespace s21;
 
-SmartCalc::SmartCalc(QWidget* parent) : QWidget(parent) {
+SmartCalc::SmartCalc(QWidget *parent) : QWidget(parent) {
   CreateWidgets();
   AddWidgets();
   InitGraph(myplot);
@@ -37,7 +38,6 @@ void SmartCalc::CreateWidgets() {
   for (int i = 0; i < NumDigitButtons; ++i)
     DigitButtons[i] = CreateButton(QString::number(i), SLOT(DigitClicked()));
 
-  
   bcsp_btn = CreateButton(tr("<--"), SLOT(BscpClicked()));
   ac_btn = CreateButton(tr("AC"), SLOT(AcClicked()));
   equal_btn = CreateButton(tr("="), SLOT(EqualClicked()));
@@ -104,24 +104,23 @@ void SmartCalc::AddWidgets() {
   main_layout->addWidget(x_display, 1, 1);
   main_layout->addWidget(graph_btn, 5, 0);
   main_layout->addWidget(exp_btn, 5, 2);
-  #if defined __APPLE__ && defined __MACH__
+#if defined __APPLE__ && defined __MACH__
   main_layout->addWidget(myplot, 6, 0, 30, 7);
-  #else
+#else
   main_layout->addWidget(myplot, 6, 0, 50, 7);
-  #endif
+#endif
 
-  #if defined __APPLE__ && defined __MACH__
-  main_layout->addWidget(xmin_display, 58, 0); // change in school
+#if defined __APPLE__ && defined __MACH__
+  main_layout->addWidget(xmin_display, 58, 0);  // change in school
   main_layout->addWidget(xmax_display, 58, 1);
   main_layout->addWidget(step_display, 58, 3);
-  #else
+#else
   main_layout->addWidget(xmin_display, 58, 0);
   main_layout->addWidget(xmax_display, 58, 1);
   main_layout->addWidget(step_display, 58, 3);
-  #endif
+#endif
   main_layout->addWidget(ymin_display, 58, 5);
   main_layout->addWidget(ymax_display, 58, 6);
-
 }
 
 void SmartCalc::TuneWidgets() {
@@ -198,10 +197,9 @@ void SmartCalc::TuneWidgets() {
 }
 
 void SmartCalc::DigitClicked() {
-  Button *clicked_button = qobject_cast<Button*>(sender());
+  Button *clicked_button = qobject_cast<Button *>(sender());
   int digit_value = clicked_button->text().toInt();
-  if (main_display->text() == "0" && digit_value == 0.0)
-    return;
+  if (main_display->text() == "0" && digit_value == 0.0) return;
 
   main_display->setText(main_display->text() + QString::number(digit_value));
 }
@@ -218,42 +216,38 @@ void SmartCalc::OtherClicked() {
   main_display->setText(main_display->text() + btn_text);
 }
 
-
 void SmartCalc::BscpClicked() {
   QString text = main_display->text();
   text.chop(1);
   main_display->setText(text);
 }
 
-void SmartCalc::AcClicked() {
-  main_display->clear();
-}
+void SmartCalc::AcClicked() { main_display->clear(); }
 
 void SmartCalc::EqualClicked() {
   if (main_display->text().isEmpty()) return;
 
   double x = x_display->text().toDouble();
-  try{
-
+  try {
     ClController c(main_display->text().toStdString());
     if (graph_btn->isChecked())
       PrintPlot(c);
     else
       main_display->setText(QString::number(c.Calculate(x)));
 
-  } catch (const std::exception& e) {
+  } catch (const std::exception &e) {
     main_display->setText(QString(QString::fromStdString(e.what())));
   }
 }
 
-void SmartCalc::PrintPlot(const ClController& c) {
+void SmartCalc::PrintPlot(const ClController &c) {
   QString x1 = xmin_display->text(), x2 = xmax_display->text(),
           y1 = ymin_display->text(), y2 = ymax_display->text();
   if (x1.isEmpty() || x2.isEmpty() || y1.isEmpty() || y2.isEmpty()) {
     main_display->setText(QString("Unknown range"));
     return;
   }
-  
+
   double x_start = x1.toDouble(), x_end = x2.toDouble(),
          y_start = y1.toDouble(), y_end = y2.toDouble();
 
@@ -270,12 +264,13 @@ void SmartCalc::PrintPlot(const ClController& c) {
   }
 
   int dots = (x_end - x_start) / step + 1;
-  std::set <int> to_skip;
+  std::set<int> to_skip;
 
   int number = 0;
   for (double x = x_start; x <= x_end; x += step, ++number) {
     double res = c.Calculate(x);
-    if ((res < YMAX && res - y_end > EPS) || (res > YMIN && y_start - res > EPS)) {
+    if ((res < YMAX && res - y_end > EPS) ||
+        (res > YMIN && y_start - res > EPS)) {
       to_skip.insert(number);
       --dots;
     }
@@ -299,10 +294,9 @@ void SmartCalc::PrintPlot(const ClController& c) {
   myplot->graph(0)->setData(x, y);
   myplot->xAxis->rescale();
   myplot->replot();
-
 }
 
-Button* SmartCalc::CreateButton(const QString &text, const char *member) {
+Button *SmartCalc::CreateButton(const QString &text, const char *member) {
   Button *button = new Button(text);
   connect(button, SIGNAL(clicked()), this, member);
   return button;
@@ -323,8 +317,7 @@ void SmartCalc::InitGraph(QCustomPlot *plot) {
 }
 
 SmartCalc::~SmartCalc() {
-  for (int i = 0; i < NumDigitButtons; ++i)
-    delete DigitButtons[i];
+  for (int i = 0; i < NumDigitButtons; ++i) delete DigitButtons[i];
   delete main_display;
   delete xmin_display;
   delete xmax_display;

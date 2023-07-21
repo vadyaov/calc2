@@ -1,15 +1,10 @@
 #include "../includes/cl_controller.h"
 
-using namespace s21;
+s21::ClController::ClController(const std::string& exp)
+    : m{new Calculator(exp)} {}
 
-ClController::ClController(const std::string& exp) : m{new Calculator(exp)} {
-}
+s21::ClController::~ClController() { delete m; }
 
-ClController:: ~ClController() {
-  delete m;
-}
-
-double ClController::Calculate(const double x) const {
+double s21::ClController::Calculate(const double x) const {
   return m->CalculateExpression(x);
 }
-

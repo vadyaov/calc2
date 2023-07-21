@@ -1,15 +1,16 @@
 #include "../includes/depositcalc.h"
-#include "../../controller/includes/dp_controller.h"
 
-#include <QLineEdit>
+#include <QComboBox>
+#include <QDateEdit>
 #include <QGridLayout>
+#include <QHBoxLayout>
 #include <QLabel>
-#include <QTextEdit>
+#include <QLineEdit>
 #include <QPushButton>
 #include <QRadioButton>
-#include <QDateEdit>
-#include <QComboBox>
-#include <QHBoxLayout>
+#include <QTextEdit>
+
+#include "../../controller/includes/dp_controller.h"
 
 using namespace s21;
 
@@ -23,7 +24,7 @@ DepositCalc::DepositCalc(QWidget* parent) : QWidget(parent) {
 
 void DepositCalc::CreateWidgets() {
   main_layout = new QGridLayout();
-  
+
   amount_label = new QLabel(tr("Deposit Amount"));
   term_label = new QLabel(tr("Deposit Term"));
   rate_label = new QLabel(tr("Interest Rate"));
@@ -46,12 +47,11 @@ void DepositCalc::CreateWidgets() {
 
   calculate = new QPushButton(tr("CALCULATE"));
 
-
   payment_freq_box = new QComboBox;
   depo_repl_box = new QComboBox;
-  depo_remove_box = new QComboBox; 
+  depo_remove_box = new QComboBox;
   cap_box = new QComboBox;
-   
+
   first_day = new QDateEdit;
   last_day = new QDateEdit;
 
@@ -118,8 +118,10 @@ void DepositCalc::CalcClicked() {
   double tax = tax_line->text().toDouble();
 
   try {
-    DpController c({depo, repl, remo}, {rate, tax}, DpController::pair{f_day, l_day});
-    std::string data = c.DepositData(cap_index, pay_index, repl_index, remove_index);
+    DpController c({depo, repl, remo}, {rate, tax},
+                   DpController::pair{f_day, l_day});
+    std::string data =
+        c.DepositData(cap_index, pay_index, repl_index, remove_index);
     main_text->setPlainText(QString::fromStdString(data));
   } catch (std::exception& e) {
     main_text->setPlainText(QString::fromStdString(e.what()));
@@ -133,16 +135,18 @@ void DepositCalc::CheckEmptyLines() {
     main_text->setPlainText(QString("Empty Interest Rate"));
   } else if (tax_line->text().isEmpty()) {
     main_text->setPlainText(QString("Empty Tax Rate"));
-  } else if (depo_repl_box->currentIndex() != 0 && repl_amount_line->text().isEmpty()) {
+  } else if (depo_repl_box->currentIndex() != 0 &&
+             repl_amount_line->text().isEmpty()) {
     main_text->setPlainText(QString("Empty Replanish Amount"));
-  } else if (depo_remove_box->currentIndex() != 0 && remove_amount_line->text().isEmpty()) {
+  } else if (depo_remove_box->currentIndex() != 0 &&
+             remove_amount_line->text().isEmpty()) {
     main_text->setPlainText(QString("Empty Remove Amount"));
   }
 }
 
 void DepositCalc::SetWidgets() {
   SetComboBoxItems();
-  
+
   first_day->setDisplayFormat(QString("dd.MM.yyyy"));
   last_day->setDisplayFormat(QString("dd.MM.yyyy"));
   first_day->setMinimumDate(QDate::currentDate());
@@ -184,7 +188,6 @@ void DepositCalc::SetComboBoxItems() {
 }
 
 DepositCalc::~DepositCalc() {
-
   delete amount_label;
   delete term_label;
   delete rate_label;
@@ -194,24 +197,24 @@ DepositCalc::~DepositCalc() {
   delete repl_amount_label;
   delete withdrawals_label;
   delete remove_amount_label;
-                     
+
   delete amount_line;
   delete rate_line;
   delete tax_line;
   delete repl_amount_line;
   delete remove_amount_line;
-                     
+
   delete main_text;
-                     
+
   delete calculate;
-                     
+
   delete capitalization;
-                     
+
   delete payment_freq_box;
   delete depo_repl_box;
   delete depo_remove_box;
   delete cap_box;
-   
+
   delete first_day;
   delete last_day;
 

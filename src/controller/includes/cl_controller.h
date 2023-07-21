@@ -5,20 +5,20 @@
 
 namespace s21 {
 class ClController {
-  private:
-    Calculator *m;
-  public:
-    using pair = std::pair<std::string, std::string>;
+ private:
+  Calculator *m;
 
-    ClController() = delete;
+ public:
+  using pair = std::pair<std::string, std::string>;
 
-    explicit ClController(const std::string&);
+  ClController() = delete;
 
-    ~ClController();
+  explicit ClController(const std::string &);
 
-    double Calculate(const double) const;
+  ~ClController();
 
+  double Calculate(const double) const;
 };
 }  // namespace s21
 
-#endif //  CONTROLLER_H
+#endif  //  CONTROLLER_H

@@ -10,7 +10,7 @@ MK := mkdir -p
 EXEC := smartcalc
 ARCHIVE := $(CURR_DIR)/$(EXEC)
 
-all: tests install run
+all: install run
 
 install:
 	@$(MK) $(BUILD_DIR)
@@ -18,7 +18,7 @@ install:
 	@cd $(BUILD_DIR) ; $(MAKE) ; cd ..
 
 uninstall:
-	@$(RM) -r view/$(BUILD_DIR)
+	@$(RM) -r $(BUILD_DIR)
 
 run:
 	@$(BUILD_DIR)/smartcalc
@@ -28,9 +28,9 @@ dist: create_dirs cpy_files
 	mv $(ARCHIVE).tgz $(CURR_DIR)/..
 	$(RM) -r $(ARCHIVE)
 
-# dvi:
-# 	makeinfo documentation.texi --html
-# 	open ./manual/index.html
+dvi:
+	makeinfo documentation.texi --html
+	open ./manual/index.html
 
 create_dirs:
 	@$(RM) -r $(ARCHIVE)
@@ -72,10 +72,7 @@ tests:
 gcov_report:
 	@cd $(MODEL_DIR) ; $(MAKE) gcov ; cd ./..
 
-# gcov_report:
-# 	@cd $(LOGIC_DIR) ; make gcov_report ; cd ./..
-
 clean: uninstall
 	@cd $(MODEL_DIR) ; $(MAKE) clean ; cd ./..
 	@$(RM) -r ../*.tgz
-	# @$(RM) -r manual/
+	@$(RM) -r manual/

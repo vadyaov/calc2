@@ -1,9 +1,9 @@
-#include "includes/smartcalc.h"
+#include <QApplication>
+#include <QTabWidget>
+
 #include "includes/creditcalc.h"
 #include "includes/depositcalc.h"
-
-#include <QTabWidget>
-#include <QApplication>
+#include "includes/smartcalc.h"
 
 int main(int argc, char **argv) {
   QApplication a(argc, argv);

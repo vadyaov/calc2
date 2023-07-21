@@ -1,12 +1,13 @@
 #include "../includes/creditcalc.h"
-#include "../../controller/includes/cr_controller.h"
 
-#include <QLineEdit>
+#include <QComboBox>
 #include <QGridLayout>
 #include <QLabel>
-#include <QTextEdit>
+#include <QLineEdit>
 #include <QPushButton>
-#include <QComboBox>
+#include <QTextEdit>
+
+#include "../../controller/includes/cr_controller.h"
 
 using namespace s21;
 
@@ -86,11 +87,12 @@ void CreditCalc::CalcClicked() {
 
   try {
     CrController c(amount, year, month, rate);
-    Credit::type t =  compound_box->currentText() == QString("annually")
-      ? Credit::Annually : Credit::Monthly;
+    Credit::type t = compound_box->currentText() == QString("annually")
+                         ? Credit::Annually
+                         : Credit::Monthly;
     QString out = QString::fromStdString(c.CreditData(t));
     main_text->setPlainText(out);
-  } catch (std::exception &e) {
+  } catch (std::exception& e) {
     main_text->setPlainText(QString::fromStdString(e.what()));
   }
 }
@@ -117,7 +119,7 @@ CreditCalc::~CreditCalc() {
   delete term_y_line;
   delete term_m_line;
   delete rate_line;
-  
+
   delete main_text;
 
   delete calculate;
