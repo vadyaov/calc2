@@ -5,12 +5,9 @@
 
 namespace s21 {
 class Model {
-  private:
     std::string expression;
   public:
-    Model() = delete;
     explicit Model(const std::string&);
-    ~Model() = default;
     double CalculateExpression(const double) const;
 };
 }  // namespace s21

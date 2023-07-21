@@ -133,6 +133,14 @@ TEST(calc_test, t14) {
   ASSERT_EQ(result, expected);
 }
 
+TEST(calc_test, t15) {
+  Model m("2.15*sin(30)/1e-2 + 1.45/4.23e-1");
+  double result = 0.0, expected = 0.0;
+  result = m.CalculateExpression(55.5);
+  expected = 2.15 * sin(30) / 1e-2 + 1.45/4.23e-1;
+  ASSERT_EQ(result, expected);
+}
+
 TEST(calc_test, e1) {
   EXPECT_THROW( {
     try {
@@ -266,6 +274,42 @@ TEST(calc_test, e12) {
   EXPECT_THROW( {
     try {
       Model m("-------sin-------((((((((((((((++-++1)++++++++");
+      m.CalculateExpression(0.0);
+    } catch (const std::logic_error& e) {
+      EXPECT_STREQ("Invalid expression", e.what());
+      throw;
+    }
+  }, std::logic_error);
+}
+
+TEST(calc_test, e13) {
+  EXPECT_THROW( {
+    try {
+      Model m("e-1");
+      m.CalculateExpression(0.0);
+    } catch (const std::logic_error& e) {
+      EXPECT_STREQ("Invalid expression", e.what());
+      throw;
+    }
+  }, std::logic_error);
+}
+
+TEST(calc_test, e14) {
+  EXPECT_THROW( {
+    try {
+      Model m("1e");
+      m.CalculateExpression(0.0);
+    } catch (const std::logic_error& e) {
+      EXPECT_STREQ("Invalid expression", e.what());
+      throw;
+    }
+  }, std::logic_error);
+}
+
+TEST(calc_test, e15) {
+  EXPECT_THROW( {
+    try {
+      Model m("1.28eee-1");
       m.CalculateExpression(0.0);
     } catch (const std::logic_error& e) {
       EXPECT_STREQ("Invalid expression", e.what());

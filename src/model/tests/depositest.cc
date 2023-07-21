@@ -36,3 +36,27 @@ TEST(deposit_test, t3) {
   EXPECT_EQ(out, expected);
 }
 
+TEST(deposit_test, e1) {
+  std::string start = "12.11.2023", end = "12.11.2024";
+  EXPECT_THROW( {
+    try {
+      Deposit d(Amount(-350000.0, 0, 0), Rate(4.7, 30), Days(str_pair(start, end)));
+    } catch (const std::logic_error& e) {
+      EXPECT_STREQ("Negative value error", e.what());
+      throw;
+    }
+  }, std::logic_error);
+}
+
+TEST(deposit_test, e2) {
+  std::string start = "12.11.2023", end = "12.11.2024";
+  EXPECT_THROW( {
+    try {
+      Deposit d(Amount(350000.0, -1, 0), Rate(4.7, 30), Days(str_pair(start, end)));
+    } catch (const std::logic_error& e) {
+      EXPECT_STREQ("Negative value error", e.what());
+      throw;
+    }
+  }, std::logic_error);
+}
+

@@ -33,10 +33,7 @@ class Deposit {
   public:
     using F = enum Frequency {NO, DAY, WEEK, MONTH1, MONTH2, QUARTER, MONTH4, MONTH6, YEAR};
 
-    Deposit() = delete;
     Deposit(const Amount&, const Rate&, std::size_t);
-    ~Deposit() = default;
-
     std::string CalculateProfit(F, F, F, bool);
 
 };

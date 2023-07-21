@@ -2,6 +2,7 @@
 #include <stack>
 #include <cctype>
 #include <cmath>
+#include <regex>
 #include <stdexcept>
 
 #include <iostream>
@@ -118,7 +119,7 @@ std::string MakePolish(const std::string& src) {
     } else if (IsOperator(*i)) {
       ProcessOperator(*i, out, sstack);
     } else {
-      throw std::logic_error("Incorrect expression");
+      throw std::logic_error("Invalid expression");
     }
   }
 
@@ -146,46 +147,33 @@ void IsInvalidDot(const char *point) {
   }
 }
 
-void AddBracketsAroundExp(std::string& str) {
-  // checking for incorrect exp
-  for (auto it = str.begin(); it != str.end(); ++it) {
+std::string AddBracketsAroundExp(const std::string& src) {
+  std::string res = src;
+  const std::string pattern_text = "\\b[0-9]+(\\.[0-9]+)?[e][-+]?[0-9]+\\b";
+  std::regex pattern(pattern_text);
+  std::sregex_iterator it(res.begin(), res.end(), pattern), it_end;
 
-    // it --> e
-    if (*it == 'e' && it != str.begin() && it != str.end() - 1) {
-      std::cout << "HERE1\n";
-      if (IsDigit(*(it - 1)) && (IsDigit(*(it + 1)) || *(it + 1) == '+' || *(it + 1) == '-')) {
-        std::cout << "HERE2\n";
-        int i = 2;
-        --it;
-        while ((IsDigit(*it) || *it == '.') && it != str.begin() - 1) {
-          std::cout << *it << ' ';
-          ++i;
-          --it;
-        }
-        std::cout << "HERE3\n";
-        str.insert(it + 1, '(');
-        std::cout << "HERE4\n";
-        it += i + 1;
-        std::cout << "i = " << i << std::endl;
-        std::cout << "\n*it = " << *it << std::endl;
-        int count = 0;
-        while (it != str.end() && (IsDigit(*it) || *it == '.' || *it == '+' || *it == '-')) {
-          if (*it == '+' || *it == '-') ++count;
-          if (count > 1) break;
-          ++it;
-        }
-        str.insert(it, ')');
-      }
-    }
+  std::vector<std::string> matches;
+  std::vector<std::pair<std::size_t, std::size_t>> lengths;
+  for (; it !=  it_end; ++it) {
+    const std::smatch& match = *it;
+    std::size_t start_pos = match.position();
 
+    matches.push_back(match.str());
+    lengths.push_back(std::pair<std::size_t, std::size_t>(start_pos, match.length()));
   }
+
+
+  for (std::size_t i = 0, offset = 0; i < matches.size();++i, offset += 2)
+    res.replace(lengths[i].first + offset, lengths[i].second, std::string("(") + matches[i] + std::string(")"));
+
+  return res;
 }
 
 void FindExpo(std::string& result) {
-  std::cout << result << std::endl;
+  if (result.find('e') == 0) return;
 
-  AddBracketsAroundExp(result);
-
+  result = AddBracketsAroundExp(result);
   for (std::size_t i = 0; i < result.size(); ++i) {
     if (result[i] == 'e') {
       if (i > 0 && i < result.size() - 1 && IsDigit(result[i - 1]) &&
@@ -194,8 +182,6 @@ void FindExpo(std::string& result) {
       }
     }
   }
-
-  std::cout << result << std::endl;
 }
 
 std::string ReplaceFunctionsWithSymbols(const std::string& src) {
@@ -218,6 +204,8 @@ std::string ReplaceFunctionsWithSymbols(const std::string& src) {
 
   FindExpo(result);
   FindUnary(result);
+
+  std::cout << result << std::endl;
 
   return result;
 }

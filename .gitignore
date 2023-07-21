@@ -32,4 +32,5 @@
 *.app
 
 src/model/build/*
+src/model/cover/*
 src/build/*
