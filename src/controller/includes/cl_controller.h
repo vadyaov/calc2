@@ -6,7 +6,7 @@
 namespace s21 {
 class ClController {
   private:
-    Model *m;
+    Calculator *m;
   public:
     using pair = std::pair<std::string, std::string>;
 

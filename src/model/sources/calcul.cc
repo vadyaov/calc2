@@ -5,8 +5,6 @@
 #include <regex>
 #include <stdexcept>
 
-#include <iostream>
-
 #include "../includes/calcul.h"
 
 namespace {
@@ -205,8 +203,6 @@ std::string ReplaceFunctionsWithSymbols(const std::string& src) {
   FindExpo(result);
   FindUnary(result);
 
-  std::cout << result << std::endl;
-
   return result;
 }
 
@@ -292,11 +288,11 @@ void FunctionAction(std::stack<double>& nstack, char s) {
 }
 }  // namespace
 
-s21::Model::Model(const std::string& src) : expression{src} {
+s21::Calculator::Calculator(const std::string& src) : expression{src} {
   expression = MakePolish(ReplaceFunctionsWithSymbols(expression));
 }
 
-double s21::Model::CalculateExpression(const double x) const {
+double s21::Calculator::CalculateExpression(const double x) const {
 
   std::stack<double> nstack;
 

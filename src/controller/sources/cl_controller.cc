@@ -2,7 +2,7 @@
 
 using namespace s21;
 
-ClController::ClController(const std::string& exp) : m{new Model(exp)} {
+ClController::ClController(const std::string& exp) : m{new Calculator(exp)} {
 }
 
 ClController:: ~ClController() {

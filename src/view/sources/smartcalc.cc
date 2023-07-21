@@ -125,7 +125,6 @@ void SmartCalc::AddWidgets() {
 }
 
 void SmartCalc::TuneWidgets() {
-  main_display->setReadOnly(true);
   main_display->setAlignment(Qt::AlignRight);
   main_display->setMaxLength(255);
 

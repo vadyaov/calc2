@@ -4,10 +4,10 @@
 #include <string>
 
 namespace s21 {
-class Model {
+class Calculator {
     std::string expression;
   public:
-    explicit Model(const std::string&);
+    explicit Calculator(const std::string&);
     double CalculateExpression(const double) const;
 };
 }  // namespace s21
