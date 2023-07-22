@@ -12,7 +12,6 @@ test:
 gcov:
 	mkdir -p $(COVER_DIR)
 	cmake ./ -B $(COVER_DIR) -DCMAKE_BUILD_TYPE=Debug
-	# $(MAKE) -C $(COVER_DIR)
 	$(MAKE) -C ./$(COVER_DIR) calc_coverage
 	open ./cover/calc_coverage/index.html
 

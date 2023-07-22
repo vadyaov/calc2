@@ -133,16 +133,6 @@ void FindUnary(std::string& src) {
       }
 }
 
-bool Invalid(std::string::const_iterator it) {
-  return !IsDigit(*(it - 1)) || !IsDigit(*(it + 1));
-}
-
-void IsInvalidDot(const char* point) {
-  if (Invalid(std::string::const_iterator(point))) {
-    throw std::logic_error("Invalid expression");
-  }
-}
-
 std::string AddBracketsAroundExp(const std::string& src) {
   std::string res = src;
   const std::string pattern_text = "\\b[0-9]+(\\.[0-9]+)?[e][-+]?[0-9]+\\b";
@@ -182,6 +172,16 @@ void FindExpo(std::string& result) {
   }
 }
 
+bool Invalid(std::string::const_iterator it) {
+  return !IsDigit(*(it - 1)) || !IsDigit(*(it + 1));
+}
+
+void IsInvalidDot(std::string::const_iterator it) {
+  if (Invalid(it)) {
+    throw std::logic_error("Invalid expression");
+  }
+}
+
 std::string ReplaceFunctionsWithSymbols(const std::string& src) {
   std::string result;
   std::vector<std::string> functions{"mod",  "sin",  "cos",  "tan", "asin",
@@ -189,7 +189,10 @@ std::string ReplaceFunctionsWithSymbols(const std::string& src) {
   std::string symb{"msctSCTqlg"};
 
   for (std::size_t i = 0; i < src.size(); ++i) {
-    if (src[i] == '.') IsInvalidDot(&src[i]);
+    if (src[i] == '.') {
+      std::string::const_iterator it = src.cbegin() + i;
+      IsInvalidDot(it);
+    }
 
     if (IsAlpha(src[i]))
       for (std::size_t k = 0; k < 10; ++k)

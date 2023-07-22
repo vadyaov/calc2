@@ -31,6 +31,9 @@
 *.out
 *.app
 
+#vim
+*.un~
+
 src/model/build/*
 src/model/cover/*
 src/build/*

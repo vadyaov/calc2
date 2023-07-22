@@ -29,7 +29,7 @@ target_link_libraries(tests GTest::gtest_main)
 
 gtest_discover_tests(tests)
 
-if(CMAKE_COMPILER_IS_GNUCXX)
+# if(CMAKE_COMPILER_IS_GNUCXX)
   include(CodeCoverage)
   append_coverage_compiler_flags()
   setup_target_for_coverage_lcov(
@@ -37,5 +37,5 @@ if(CMAKE_COMPILER_IS_GNUCXX)
          EXECUTABLE tests -j ${PROCESSOR_COUNT}
          BASE_DIRECTORY "../"
          EXCLUDE "/usr/include/*" "./model/tests/*" "./gtest/*" "./gtest/internal/*")
-endif()
+# endif()
 
